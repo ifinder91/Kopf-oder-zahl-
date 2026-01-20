@@ -1,46 +1,193 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Heads or Tails Wins</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Make quick decisions with a single swipe. A smooth coin flip with sound, haptics, and Apple Watch support.">
+  <meta name="description" content="Make quick decisions with a single swipe. A smooth coin flip with sound, haptics, and Apple Watch support." />
+
   <style>
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-      background: #0b0b0f;
-      color: #ffffff;
+    :root{
+      --bg:#0b0b0f;
+      --card:rgba(255,255,255,.06);
+      --stroke:rgba(255,255,255,.12);
+      --text:rgba(255,255,255,.92);
+      --muted:rgba(255,255,255,.72);
+      --chip:rgba(255,255,255,.10);
+      --chipStroke:rgba(255,255,255,.14);
+      --btn:rgba(255,255,255,.12);
+      --btnHover:rgba(255,255,255,.18);
+      --accent:#7dd3fc;
     }
-    .box {
-      max-width: 720px;
-      margin: 60px auto;
-      padding: 24px;
-      border-radius: 24px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.12);
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display",Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      background:radial-gradient(1200px 800px at 20% 10%, rgba(125,211,252,.12), transparent 60%),
+                 radial-gradient(1000px 700px at 90% 30%, rgba(167,139,250,.10), transparent 55%),
+                 var(--bg);
+      color:var(--text);
     }
-    h1 {
-      margin-top: 0;
-      font-size: 32px;
+    .wrap{
+      max-width:920px;
+      margin:0 auto;
+      padding:56px 18px 44px;
     }
-    p {
-      line-height: 1.5;
-      opacity: 0.9;
-      font-size: 16px;
+    .card{
+      background:var(--card);
+      border:1px solid var(--stroke);
+      border-radius:28px;
+      padding:28px;
+      box-shadow:0 18px 60px rgba(0,0,0,.35);
+      backdrop-filter: blur(10px);
+    }
+    .top{
+      display:flex;
+      gap:18px;
+      align-items:flex-start;
+      justify-content:space-between;
+      flex-wrap:wrap;
+    }
+    h1{
+      margin:0;
+      font-size:34px;
+      letter-spacing:-0.02em;
+    }
+    .subtitle{
+      margin:10px 0 0;
+      color:var(--muted);
+      line-height:1.55;
+      max-width:62ch;
+      font-size:16px;
+    }
+    .chips{
+      margin-top:18px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:9px 12px;
+      border-radius:999px;
+      background:var(--chip);
+      border:1px solid var(--chipStroke);
+      color:rgba(255,255,255,.86);
+      font-size:13px;
+      white-space:nowrap;
+    }
+    .grid{
+      margin-top:22px;
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap:12px;
+    }
+    .feat{
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.04);
+      padding:14px 14px 13px;
+    }
+    .feat b{
+      display:block;
+      font-size:14px;
+      margin-bottom:6px;
+    }
+    .feat span{
+      display:block;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.45;
+    }
+    .actions{
+      margin-top:18px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:10px 14px;
+      border-radius:14px;
+      background:var(--btn);
+      border:1px solid rgba(255,255,255,.14);
+      color:rgba(255,255,255,.92);
+      text-decoration:none;
+      font-size:14px;
+      transition:all .15s ease;
+    }
+    .btn:hover{ background:var(--btnHover); }
+    .btn.primary{
+      background:rgba(125,211,252,.14);
+      border-color:rgba(125,211,252,.35);
+      color:#eaf7ff;
+    }
+    .footer{
+      margin-top:14px;
+      color:rgba(255,255,255,.62);
+      font-size:12.5px;
+      line-height:1.45;
+    }
+    .footer a{ color:var(--accent); text-decoration:none; }
+    .footer a:hover{ text-decoration:underline; }
+
+    @media (max-width:860px){
+      .grid{ grid-template-columns: 1fr; }
+      h1{ font-size:30px; }
     }
   </style>
 </head>
+
 <body>
-  <div class="box">
-    <h1>Heads or Tails Wins</h1>
-    <p>
-      Make quick decisions with just one swipe.
-      A smooth coin flip with sound, haptics, and Apple Watch support.
-    </p>
-    <p>
-      Fair. Random. Simple.
-    </p>
+  <div class="wrap">
+    <div class="card">
+      <div class="top">
+        <div>
+          <h1>Heads or Tails Wins</h1>
+          <p class="subtitle">
+            Make quick decisions with a single swipe. Enjoy a smooth coin flip with sound, haptics,
+            optional confetti, and a new guessing mode. Now available on iPhone and Apple Watch.
+          </p>
+
+          <div class="chips">
+            <div class="chip">Coin Flip</div>
+            <div class="chip">Apple Watch</div>
+            <div class="chip">Guess Mode</div>
+            <div class="chip">Sound & Haptics</div>
+            <div class="chip">Dark & Light Mode</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="feat">
+          <b>Fast & Fair</b>
+          <span>Get a random result instantly—perfect for quick choices.</span>
+        </div>
+        <div class="feat">
+          <b>Guess the Next Flip</b>
+          <span>Pick heads or tails before the throw and track your wins.</span>
+        </div>
+        <div class="feat">
+          <b>Apple Watch Ready</b>
+          <span>Flip on your wrist with smooth animation, sound, and haptics.</span>
+        </div>
+      </div>
+
+      <div class="actions">
+        <a class="btn" href="https://ifinder91.github.io/Datenschutz/" target="_blank" rel="noopener">Privacy Policy</a>
+        <a class="btn" href="https://ifinder91.github.io/Datenschutz/" target="_blank" rel="noopener">Support</a>
+      </div>
+
+     <div class="footer">
+  Contact: <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a><br />
+  This page is provided for App Store marketing and support links.
+</div>
+    </div>
   </div>
 </body>
 </html>
