@@ -1,775 +1,512 @@
 <!doctype html>
-<html lang="de">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Datenschutzerklärung – Kopf oder Zahl gewinnt</title>
+  <title>Heads or Tails Wins</title>
+  <meta name="description" content="Make quick decisions with a single swipe. A smooth coin flip with sound, haptics, and Apple Watch support." />
   <style>
-    :root {
-      --bg: #0b0b0f;
-      --card: rgba(255,255,255,.06);
-      --stroke: rgba(255,255,255,.12);
-      --text: rgba(255,255,255,.92);
-      --muted: rgba(255,255,255,.60);
-      --accent: #7dd3fc;
-      --accent2: #a78bfa;
+    :root{
+      --bg:#0b0b0f;
+      --card:rgba(255,255,255,.06);
+      --stroke:rgba(255,255,255,.12);
+      --text:rgba(255,255,255,.92);
+      --muted:rgba(255,255,255,.68);
+      --chip:rgba(255,255,255,.09);
+      --chipStroke:rgba(255,255,255,.14);
+      --btn:rgba(255,255,255,.11);
+      --btnHover:rgba(255,255,255,.18);
+      --accent:#7dd3fc;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", Segoe UI, Roboto, sans-serif;
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display",Segoe UI,Roboto,Helvetica,Arial,sans-serif;
       background:
-        radial-gradient(900px 600px at 15% 10%, rgba(125,211,252,.10), transparent 60%),
-        radial-gradient(800px 500px at 85% 25%, rgba(167,139,250,.08), transparent 55%),
+        radial-gradient(1200px 800px at 20% 10%, rgba(125,211,252,.11), transparent 60%),
+        radial-gradient(1000px 700px at 90% 30%, rgba(167,139,250,.09), transparent 55%),
         var(--bg);
-      color: var(--text);
-      min-height: 100vh;
+      color:var(--text);
+      min-height:100vh;
     }
 
     /* ── NAV ── */
-    nav {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 14px 24px;
-      background: rgba(11,11,15,.85);
-      backdrop-filter: blur(14px);
-      border-bottom: 1px solid var(--stroke);
+    nav{
+      position:sticky;
+      top:0;
+      z-index:100;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:13px 22px;
+      background:rgba(11,11,15,.82);
+      backdrop-filter:blur(14px);
+      border-bottom:1px solid rgba(255,255,255,.08);
     }
-    .nav-title {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--accent);
-      letter-spacing: .01em;
+    .nav-logo{
+      font-size:15px;
+      font-weight:700;
+      letter-spacing:-.01em;
+      color:var(--accent);
     }
-    .lang-wrapper {
-      display: flex;
-      align-items: center;
-      gap: 8px;
+    .lang-select{
+      appearance:none;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.16);
+      border-radius:10px;
+      color:var(--text);
+      font-size:13px;
+      padding:6px 28px 6px 11px;
+      cursor:pointer;
+      outline:none;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='rgba(255,255,255,.45)' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat:no-repeat;
+      background-position:right 9px center;
+      transition:border-color .15s,background-color .15s;
     }
-    .lang-label {
-      font-size: 12px;
-      color: var(--muted);
-    }
-    .lang-select {
-      appearance: none;
-      background: rgba(255,255,255,.08);
-      border: 1px solid rgba(255,255,255,.18);
-      border-radius: 10px;
-      color: var(--text);
-      font-size: 13px;
-      padding: 6px 30px 6px 12px;
-      cursor: pointer;
-      outline: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='rgba(255,255,255,.5)' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 10px center;
-      transition: border-color .15s, background-color .15s;
-    }
-    .lang-select:hover { border-color: rgba(125,211,252,.5); background-color: rgba(255,255,255,.12); }
-    .lang-select option { background: #1a1a24; color: #fff; }
+    .lang-select:hover{border-color:rgba(125,211,252,.45);background-color:rgba(255,255,255,.13);}
+    .lang-select option{background:#1a1a24;color:#fff;}
 
-    /* ── MAIN ── */
-    .wrap {
-      max-width: 760px;
-      margin: 0 auto;
-      padding: 48px 20px 64px;
-    }
-    .card {
-      background: var(--card);
-      border: 1px solid var(--stroke);
-      border-radius: 24px;
-      padding: 36px 40px;
-      backdrop-filter: blur(8px);
-    }
-    @media (max-width: 600px) {
-      .card { padding: 24px 20px; }
+    /* ── LAYOUT ── */
+    .wrap{max-width:940px;margin:0 auto;padding:52px 18px 52px;}
+    .card{
+      background:var(--card);
+      border:1px solid var(--stroke);
+      border-radius:28px;
+      padding:32px;
+      backdrop-filter:blur(10px);
+      box-shadow:0 20px 60px rgba(0,0,0,.4);
     }
 
-    /* ── CONTENT ── */
-    .doc { display: none; }
-    .doc.active { display: block; }
+    /* ── CONTENT BLOCKS ── */
+    .page{display:none;}
+    .page.active{display:block;}
 
-    .doc-header { margin-bottom: 32px; border-bottom: 1px solid var(--stroke); padding-bottom: 24px; }
-    .doc-header h1 { font-size: 26px; font-weight: 700; letter-spacing: -.02em; line-height: 1.25; }
-    .doc-header .date { margin-top: 8px; font-size: 13px; color: var(--muted); }
-
-    h2 {
-      font-size: 16px;
-      font-weight: 600;
-      color: var(--accent);
-      margin: 28px 0 10px;
-      padding-bottom: 6px;
-      border-bottom: 1px solid rgba(125,211,252,.15);
+    h1{font-size:34px;letter-spacing:-.02em;line-height:1.18;}
+    .subtitle{
+      margin:12px 0 0;
+      color:var(--muted);
+      line-height:1.6;
+      max-width:60ch;
+      font-size:15.5px;
     }
-    h3 { font-size: 14px; font-weight: 600; color: rgba(255,255,255,.85); margin: 18px 0 8px; }
-    p { font-size: 14.5px; line-height: 1.75; color: rgba(255,255,255,.78); margin-bottom: 12px; }
-    ul { padding-left: 20px; margin-bottom: 12px; }
-    li { font-size: 14.5px; line-height: 1.7; color: rgba(255,255,255,.78); margin-bottom: 4px; }
-    a { color: var(--accent); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    strong { color: rgba(255,255,255,.95); font-weight: 600; }
-
-    .highlight-box {
-      background: rgba(125,211,252,.06);
-      border: 1px solid rgba(125,211,252,.18);
-      border-radius: 12px;
-      padding: 14px 16px;
-      margin: 14px 0;
+    .chips{
+      margin-top:20px;
+      display:flex;flex-wrap:wrap;gap:9px;
     }
-    .highlight-box p { margin: 0; font-size: 13.5px; }
-
-    footer {
-      margin-top: 24px;
-      text-align: center;
-      font-size: 12px;
-      color: var(--muted);
+    .chip{
+      display:inline-flex;align-items:center;
+      padding:8px 13px;
+      border-radius:999px;
+      background:var(--chip);
+      border:1px solid var(--chipStroke);
+      color:rgba(255,255,255,.84);
+      font-size:13px;
+      white-space:nowrap;
     }
-    footer a { color: var(--accent); }
+    .grid{
+      margin-top:24px;
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:12px;
+    }
+    .feat{
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.09);
+      background:rgba(255,255,255,.03);
+      padding:16px 15px 14px;
+    }
+    .feat b{display:block;font-size:14px;margin-bottom:7px;color:rgba(255,255,255,.95);}
+    .feat span{display:block;color:var(--muted);font-size:13px;line-height:1.5;}
+    .actions{
+      margin-top:20px;
+      display:flex;flex-wrap:wrap;gap:10px;
+    }
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;
+      padding:10px 16px;
+      border-radius:14px;
+      background:var(--btn);
+      border:1px solid rgba(255,255,255,.14);
+      color:rgba(255,255,255,.90);
+      text-decoration:none;
+      font-size:14px;
+      transition:all .15s ease;
+      white-space:nowrap;
+    }
+    .btn:hover{background:var(--btnHover);}
+    .btn.primary{
+      background:rgba(125,211,252,.13);
+      border-color:rgba(125,211,252,.32);
+      color:#eaf7ff;
+    }
+    .footer{
+      margin-top:16px;
+      color:rgba(255,255,255,.50);
+      font-size:12.5px;
+      line-height:1.6;
+    }
+    .footer a{color:var(--accent);text-decoration:none;}
+    .footer a:hover{text-decoration:underline;}
+
+    @media(max-width:700px){
+      .grid{grid-template-columns:1fr;}
+      h1{font-size:28px;}
+      .card{padding:22px 18px;}
+    }
   </style>
 </head>
 <body>
 
 <nav>
-  <span class="nav-title">🪙 Heads or Tails Wins</span>
-  <div class="lang-wrapper">
-    <span class="lang-label">🌐</span>
-    <select class="lang-select" id="langSelect" onchange="switchLang(this.value)">
-      <option value="de">🇩🇪 Deutsch</option>
-      <option value="en">🇬🇧 English</option>
-      <option value="tr">🇹🇷 Türkçe</option>
-      <option value="fr">🇫🇷 Français</option>
-      <option value="ja">🇯🇵 日本語</option>
-      <option value="zh">🇨🇳 中文</option>
-      <option value="hi">🇮🇳 हिन्दी</option>
-      <option value="ru">🇷🇺 Русский</option>
-      <option value="es">🇪🇸 Español</option>
-      <option value="pt">🇧🇷 Português</option>
-      <option value="ar">🇸🇦 العربية</option>
-      <option value="ko">🇰🇷 한국어</option>
-      <option value="it">🇮🇹 Italiano</option>
-    </select>
-  </div>
+  <span class="nav-logo">🪙 Heads or Tails Wins</span>
+  <select class="lang-select" id="langSelect" onchange="switchLang(this.value)">
+    <option value="en">🇬🇧 English</option>
+    <option value="de">🇩🇪 Deutsch</option>
+    <option value="tr">🇹🇷 Türkçe</option>
+    <option value="fr">🇫🇷 Français</option>
+    <option value="ja">🇯🇵 日本語</option>
+    <option value="zh">🇨🇳 中文</option>
+    <option value="hi">🇮🇳 हिन्दी</option>
+    <option value="ru">🇷🇺 Русский</option>
+    <option value="es">🇪🇸 Español</option>
+    <option value="pt">🇧🇷 Português</option>
+    <option value="ar">🇸🇦 العربية</option>
+    <option value="ko">🇰🇷 한국어</option>
+    <option value="it">🇮🇹 Italiano</option>
+  </select>
 </nav>
 
-<div class="wrap">
-  <div class="card">
+<div class="wrap"><div class="card">
 
-    <!-- ══════════════ DEUTSCH ══════════════ -->
-    <div class="doc active" id="doc-de">
-      <div class="doc-header">
-        <h1>Datenschutzerklärung</h1>
-        <p class="date">Stand: März 2026 · App: Kopf oder Zahl gewinnt</p>
-      </div>
-      <h2>1. Verantwortlicher</h2>
-      <p><strong>Evren Agsakal</strong><br>Brückelstr. 106, 47137 Duisburg, Deutschland<br>E-Mail: <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a></p>
-
-      <h2>2. Allgemeines</h2>
-      <p>„Kopf oder Zahl gewinnt" ist eine einfache Münzwurf-App. Sie funktioniert ohne Registrierung, ohne Nutzerkonto und ohne eigene Server. Wir verarbeiten so wenig Daten wie möglich.</p>
-
-      <h2>3. Welche Daten verarbeitet werden</h2>
-      <h3>3.1 Apple App Store</h3>
-      <p>Für Download und Nutzung ist der Apple App Store erforderlich. Apple verarbeitet dabei Daten wie Apple-ID, Geräteinformationen und IP-Adresse als eigenständiger Verantwortlicher. Weitere Infos: <a href="https://www.apple.com/legal/privacy/" target="_blank">apple.com/legal/privacy</a></p>
-
-      <h3>3.2 Lokale App-Daten</h3>
-      <p>Einstellungen (Sound, Haptik, Konfetti, Designs) und der Wurfverlauf werden ausschließlich lokal auf Ihrem Gerät gespeichert. Diese Daten werden nicht übertragen.</p>
-
-      <h3>3.3 Firebase Analytics & Crashlytics (Google)</h3>
-      <div class="highlight-box">
-        <p>Die App nutzt Firebase Analytics und Firebase Crashlytics der Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland.</p>
-      </div>
-      <p>Dabei werden automatisch folgende technische Daten erhoben:</p>
-      <ul>
-        <li>Anonyme App-Instanz-ID (zufällig generiert, kein direkter Personenbezug)</li>
-        <li>Gerätetyp und iOS-Version</li>
-        <li>Absturzberichte bei App-Fehlern (Stack Traces)</li>
-        <li>Anonyme Nutzungsstatistiken (aktive Nutzer, Sitzungsdauer)</li>
-      </ul>
-      <p><strong>Zweck:</strong> Verbesserung der App-Stabilität. Es werden keine Namen, E-Mail-Adressen oder Standortdaten erhoben. Die Daten werden auf Google-Servern in den USA verarbeitet. Google ist unter dem EU-US Data Privacy Framework zertifiziert.<br>
-      Weitere Infos: <a href="https://firebase.google.com/support/privacy" target="_blank">firebase.google.com/support/privacy</a></p>
-
-      <h3>3.4 Apple Watch (falls genutzt)</h3>
-      <p>Wurfergebnisse und Einstellungen werden über Apples Schnittstellen zwischen iPhone und Apple Watch synchronisiert. Die Daten bleiben im Apple-Ökosystem.</p>
-
-      <h2>4. Kein Tracking, keine Werbung</h2>
-      <ul>
-        <li>Keine Weitergabe personenbezogener Daten zu Werbezwecken</li>
-        <li>Kein nutzerübergreifendes Tracking</li>
-        <li>Keine Werbe-SDKs eingebunden</li>
-        <li>Firebase wird ausschließlich zur technischen Verbesserung genutzt</li>
-      </ul>
-
-      <h2>5. Rechtsgrundlagen</h2>
-      <ul>
-        <li><strong>Art. 6 Abs. 1 lit. b DSGVO</strong> – Vertragserfüllung (App-Bereitstellung)</li>
-        <li><strong>Art. 6 Abs. 1 lit. f DSGVO</strong> – Berechtigtes Interesse an einer stabilen, fehlerfreien App</li>
-      </ul>
-
-      <h2>6. Speicherdauer</h2>
-      <p>Lokale Daten bleiben bis zur Deinstallation gespeichert. Firebase-Daten werden gemäß Google-Richtlinien gespeichert (Standard: 2 Monate für Ereignisdaten, 14 Monate für Nutzerdaten).</p>
-
-      <h2>7. Ihre Rechte (DSGVO)</h2>
-      <ul>
-        <li>Auskunft (Art. 15), Berichtigung (Art. 16), Löschung (Art. 17)</li>
-        <li>Einschränkung der Verarbeitung (Art. 18), Widerspruch (Art. 21)</li>
-        <li>Datenübertragbarkeit (Art. 20)</li>
-        <li>Beschwerderecht bei einer Datenschutzbehörde</li>
-      </ul>
-      <p>Anfragen an: <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a></p>
-
-      <h2>8. Änderungen</h2>
-      <p>Diese Datenschutzerklärung wird bei Bedarf aktualisiert. Die aktuelle Version ist stets auf dieser Seite abrufbar.</p>
+  <!-- ══ ENGLISH ══ -->
+  <div class="page" id="p-en">
+    <h1>Heads or Tails Wins</h1>
+    <p class="subtitle">Make quick decisions with a single swipe. Enjoy a smooth coin flip with sound, haptics, optional confetti, and a guessing mode. Available on iPhone and Apple Watch.</p>
+    <div class="chips">
+      <span class="chip">Coin Flip</span>
+      <span class="chip">Apple Watch</span>
+      <span class="chip">Guess Mode</span>
+      <span class="chip">Sound &amp; Haptics</span>
+      <span class="chip">Dark &amp; Light Mode</span>
     </div>
-
-    <!-- ══════════════ ENGLISH ══════════════ -->
-    <div class="doc" id="doc-en">
-      <div class="doc-header">
-        <h1>Privacy Policy</h1>
-        <p class="date">Last updated: March 2026 · App: Heads or Tails Wins</p>
-      </div>
-      <h2>1. Controller</h2>
-      <p><strong>Evren Agsakal</strong><br>Brückelstr. 106, 47137 Duisburg, Germany<br>Email: <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a></p>
-
-      <h2>2. Overview</h2>
-      <p>"Heads or Tails Wins" is a simple coin flip app. It works without registration, without a user account, and without any own servers. We process as little data as possible.</p>
-
-      <h2>3. Data We Process</h2>
-      <h3>3.1 Apple App Store</h3>
-      <p>Downloading and using the app requires the Apple App Store. Apple processes data such as Apple ID, device information, and IP address as an independent controller. More info: <a href="https://www.apple.com/legal/privacy/" target="_blank">apple.com/legal/privacy</a></p>
-
-      <h3>3.2 Local App Data</h3>
-      <p>Settings (sound, haptics, confetti, designs) and flip history are stored exclusively on your device. This data is never transmitted.</p>
-
-      <h3>3.3 Firebase Analytics & Crashlytics (Google)</h3>
-      <div class="highlight-box">
-        <p>The app uses Firebase Analytics and Firebase Crashlytics by Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Ireland.</p>
-      </div>
-      <p>The following technical data is collected automatically:</p>
-      <ul>
-        <li>Anonymous app instance ID (randomly generated, no direct personal link)</li>
-        <li>Device type and iOS version</li>
-        <li>Crash reports on app errors (stack traces)</li>
-        <li>Anonymous usage statistics (active users, session duration)</li>
-      </ul>
-      <p><strong>Purpose:</strong> Improving app stability. No names, email addresses, or location data are collected. Data is processed on Google servers in the US. Google is certified under the EU-US Data Privacy Framework.<br>
-      More info: <a href="https://firebase.google.com/support/privacy" target="_blank">firebase.google.com/support/privacy</a></p>
-
-      <h3>3.4 Apple Watch (if used)</h3>
-      <p>Flip results and settings are synced between iPhone and Apple Watch via Apple's interfaces. Data stays within the Apple ecosystem.</p>
-
-      <h2>4. No Tracking, No Ads</h2>
-      <ul>
-        <li>No personal data shared for advertising purposes</li>
-        <li>No cross-app tracking</li>
-        <li>No advertising SDKs integrated</li>
-        <li>Firebase is used solely for technical improvement</li>
-      </ul>
-
-      <h2>5. Legal Basis</h2>
-      <ul>
-        <li><strong>Art. 6(1)(b) GDPR</strong> – Contract performance (providing the app)</li>
-        <li><strong>Art. 6(1)(f) GDPR</strong> – Legitimate interest in a stable, error-free app</li>
-      </ul>
-
-      <h2>6. Retention</h2>
-      <p>Local data remains until you uninstall the app. Firebase data is stored per Google's policies (default: 2 months for event data, 14 months for user data).</p>
-
-      <h2>7. Your Rights (GDPR)</h2>
-      <ul>
-        <li>Access (Art. 15), Rectification (Art. 16), Erasure (Art. 17)</li>
-        <li>Restriction of processing (Art. 18), Objection (Art. 21)</li>
-        <li>Data portability (Art. 20)</li>
-        <li>Right to lodge a complaint with a supervisory authority</li>
-      </ul>
-      <p>Contact: <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a></p>
-
-      <h2>8. Changes</h2>
-      <p>This privacy policy will be updated when necessary. The current version is always available on this page.</p>
+    <div class="grid">
+      <div class="feat"><b>Fast &amp; Fair</b><span>Get a random result instantly — perfect for quick choices.</span></div>
+      <div class="feat"><b>Guess the Next Flip</b><span>Pick heads or tails before the throw and track your wins.</span></div>
+      <div class="feat"><b>Apple Watch Ready</b><span>Flip on your wrist with smooth animation, sound, and haptics.</span></div>
     </div>
-
-    <!-- ══════════════ TÜRKÇE ══════════════ -->
-    <div class="doc" id="doc-tr">
-      <div class="doc-header">
-        <h1>Gizlilik Politikası</h1>
-        <p class="date">Son güncelleme: Mart 2026 · Uygulama: Yazı mı Tura mı Kazanır</p>
-      </div>
-      <h2>1. Sorumlu Taraf</h2>
-      <p><strong>Evren Agsakal</strong><br>Brückelstr. 106, 47137 Duisburg, Almanya<br>E-posta: <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a></p>
-
-      <h2>2. Genel Bilgi</h2>
-      <p>"Yazı mı Tura mı Kazanır", basit bir yazı-tura uygulamasıdır. Kayıt, kullanıcı hesabı veya kendi sunucuları olmaksızın çalışır. Mümkün olduğunca az veri işleriz.</p>
-
-      <h2>3. İşlenen Veriler</h2>
-      <h3>3.1 Apple App Store</h3>
-      <p>Uygulamayı indirmek ve kullanmak için Apple App Store gereklidir. Apple, Apple Kimliği, cihaz bilgileri ve IP adresi gibi verileri bağımsız bir veri sorumlusu olarak işler.</p>
-
-      <h3>3.2 Yerel Uygulama Verileri</h3>
-      <p>Ayarlar (ses, titreşim, konfeti, tasarımlar) ve atış geçmişi yalnızca cihazınızda yerel olarak saklanır. Bu veriler hiçbir zaman iletilmez.</p>
-
-      <h3>3.3 Firebase Analytics & Crashlytics (Google)</h3>
-      <div class="highlight-box">
-        <p>Uygulama, Google Ireland Limited tarafından sağlanan Firebase Analytics ve Firebase Crashlytics hizmetlerini kullanmaktadır.</p>
-      </div>
-      <ul>
-        <li>Anonim uygulama örneği kimliği (rastgele oluşturulur)</li>
-        <li>Cihaz türü ve iOS sürümü</li>
-        <li>Uygulama hatalarında kilitlenme raporları</li>
-        <li>Anonim kullanım istatistikleri (aktif kullanıcılar, oturum süresi)</li>
-      </ul>
-      <p><strong>Amaç:</strong> Uygulama kararlılığını iyileştirmek. Ad, e-posta adresi veya konum verisi toplanmaz. Google, AB-ABD Veri Gizliliği Çerçevesi kapsamında sertifikalıdır.</p>
-
-      <h2>4. İzleme Yok, Reklam Yok</h2>
-      <ul>
-        <li>Reklam amaçlı kişisel veri paylaşımı yapılmaz</li>
-        <li>Uygulamalar arası izleme yapılmaz</li>
-        <li>Firebase yalnızca teknik iyileştirme için kullanılır</li>
-      </ul>
-
-      <h2>5. Haklarınız</h2>
-      <p>Erişim, düzeltme, silme, işleme kısıtlama ve itiraz haklarına sahipsiniz. İletişim: <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a></p>
+    <div class="actions">
+      <a class="btn primary" href="https://apps.apple.com" target="_blank" rel="noopener">Download on the App Store</a>
+      <a class="btn" href="https://ifinder91.github.io/Datenschutz/" target="_blank" rel="noopener">Privacy Policy</a>
+      <a class="btn" href="mailto:evro89@hotmail.de">Support</a>
     </div>
+    <div class="footer">Contact: <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a><br/>This page is provided for App Store marketing and support links.</div>
+  </div>
 
-    <!-- ══════════════ FRANÇAIS ══════════════ -->
-    <div class="doc" id="doc-fr">
-      <div class="doc-header">
-        <h1>Politique de confidentialité</h1>
-        <p class="date">Dernière mise à jour : mars 2026 · Application : Pile ou Face Gagne</p>
-      </div>
-      <h2>1. Responsable du traitement</h2>
-      <p><strong>Evren Agsakal</strong><br>Brückelstr. 106, 47137 Duisburg, Allemagne<br>E-mail : <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a></p>
-
-      <h2>2. Présentation</h2>
-      <p>« Pile ou Face Gagne » est une application simple de lancer de pièce. Elle fonctionne sans inscription, sans compte utilisateur et sans serveur propre. Nous traitons le moins de données possible.</p>
-
-      <h2>3. Données traitées</h2>
-      <h3>3.1 Apple App Store</h3>
-      <p>Le téléchargement et l'utilisation de l'application nécessitent l'App Store d'Apple. Apple traite des données telles que l'identifiant Apple, les informations sur l'appareil et l'adresse IP en tant que responsable indépendant.</p>
-
-      <h3>3.2 Données locales</h3>
-      <p>Les paramètres (son, haptique, confettis, designs) et l'historique des lancers sont stockés exclusivement sur votre appareil. Ces données ne sont jamais transmises.</p>
-
-      <h3>3.3 Firebase Analytics & Crashlytics (Google)</h3>
-      <div class="highlight-box">
-        <p>L'application utilise Firebase Analytics et Firebase Crashlytics de Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irlande.</p>
-      </div>
-      <ul>
-        <li>Identifiant d'instance d'application anonyme (généré aléatoirement)</li>
-        <li>Type d'appareil et version iOS</li>
-        <li>Rapports de plantage en cas d'erreur</li>
-        <li>Statistiques d'utilisation anonymes (utilisateurs actifs, durée de session)</li>
-      </ul>
-      <p><strong>Finalité :</strong> Améliorer la stabilité de l'application. Aucun nom, e-mail ou donnée de localisation n'est collecté. Google est certifié dans le cadre du Data Privacy Framework UE-États-Unis.</p>
-
-      <h2>4. Pas de tracking, pas de publicité</h2>
-      <ul>
-        <li>Aucune donnée personnelle partagée à des fins publicitaires</li>
-        <li>Pas de suivi entre applications</li>
-        <li>Firebase utilisé uniquement pour l'amélioration technique</li>
-      </ul>
-
-      <h2>5. Vos droits (RGPD)</h2>
-      <p>Vous disposez des droits d'accès, de rectification, d'effacement, de limitation et d'opposition. Contact : <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a></p>
+  <!-- ══ DEUTSCH ══ -->
+  <div class="page" id="p-de">
+    <h1>Kopf oder Zahl gewinnt</h1>
+    <p class="subtitle">Triff schnelle Entscheidungen mit nur einem Wisch. Genieße einen flüssigen Münzwurf mit Sound, Haptik, optionalem Konfetti und einem Tipp-Modus. Für iPhone und Apple Watch.</p>
+    <div class="chips">
+      <span class="chip">Münzwurf</span>
+      <span class="chip">Apple Watch</span>
+      <span class="chip">Tipp-Modus</span>
+      <span class="chip">Sound &amp; Haptik</span>
+      <span class="chip">Dark &amp; Light Mode</span>
     </div>
-
-    <!-- ══════════════ 日本語 ══════════════ -->
-    <div class="doc" id="doc-ja">
-      <div class="doc-header">
-        <h1>プライバシーポリシー</h1>
-        <p class="date">最終更新：2026年3月 · アプリ：表か裏かの勝利</p>
-      </div>
-      <h2>1. 管理者</h2>
-      <p><strong>Evren Agsakal</strong><br>Brückelstr. 106, 47137 Duisburg, ドイツ<br>メール：<a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a></p>
-
-      <h2>2. 概要</h2>
-      <p>「表か裏かの勝利」はシンプルなコイン投げアプリです。登録・ユーザーアカウント・独自サーバーは不要です。できるだけ少ないデータのみを処理します。</p>
-
-      <h2>3. 処理するデータ</h2>
-      <h3>3.1 Apple App Store</h3>
-      <p>アプリのダウンロードにはApple App Storeが必要です。Appleは独立した管理者として、Apple ID・デバイス情報・IPアドレスなどのデータを処理します。</p>
-
-      <h3>3.2 ローカルデータ</h3>
-      <p>設定（サウンド、触覚フィードバック、紙吹雪、デザイン）およびコイン投げ履歴はデバイス上のみに保存されます。このデータは送信されません。</p>
-
-      <h3>3.3 Firebase Analytics & Crashlytics（Google）</h3>
-      <div class="highlight-box">
-        <p>本アプリはGoogle Ireland LimitedのFirebase AnalyticsとFirebase Crashlyticsを使用しています。</p>
-      </div>
-      <ul>
-        <li>匿名のアプリインスタンスID（ランダム生成）</li>
-        <li>デバイスの種類とiOSバージョン</li>
-        <li>アプリエラー時のクラッシュレポート</li>
-        <li>匿名の利用統計（アクティブユーザー、セッション時間）</li>
-      </ul>
-      <p><strong>目的：</strong>アプリの安定性向上。名前・メールアドレス・位置情報は収集しません。GoogleはEU-US Data Privacy Frameworkの認証を受けています。</p>
-
-      <h2>4. トラッキングなし・広告なし</h2>
-      <ul>
-        <li>広告目的での個人データの共有なし</li>
-        <li>アプリをまたいだトラッキングなし</li>
-        <li>Firebaseは技術的改善のみに使用</li>
-      </ul>
-
-      <h2>5. お客様の権利</h2>
-      <p>アクセス、訂正、削除、処理制限、異議申し立ての権利があります。連絡先：<a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a></p>
+    <div class="grid">
+      <div class="feat"><b>Schnell &amp; Fair</b><span>Sofortiges Zufallsergebnis — perfekt für schnelle Entscheidungen.</span></div>
+      <div class="feat"><b>Nächsten Wurf tippen</b><span>Tippe Kopf oder Zahl vor dem Wurf und verfolge deine Treffer.</span></div>
+      <div class="feat"><b>Apple Watch bereit</b><span>Wirf die Münze am Handgelenk mit Animation, Sound und Haptik.</span></div>
     </div>
-
-    <!-- ══════════════ 中文 ══════════════ -->
-    <div class="doc" id="doc-zh">
-      <div class="doc-header">
-        <h1>隐私政策</h1>
-        <p class="date">最后更新：2026年3月 · 应用：正面还是反面</p>
-      </div>
-      <h2>1. 数据控制者</h2>
-      <p><strong>Evren Agsakal</strong><br>Brückelstr. 106, 47137 Duisburg, 德国<br>邮箱：<a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a></p>
-
-      <h2>2. 概述</h2>
-      <p>"正面还是反面"是一款简单的掷硬币应用，无需注册、用户账户或自有服务器。我们尽量减少数据处理。</p>
-
-      <h2>3. 处理的数据</h2>
-      <h3>3.1 Apple App Store</h3>
-      <p>下载应用需要使用Apple App Store。Apple作为独立控制者处理Apple ID、设备信息和IP地址等数据。</p>
-
-      <h3>3.2 本地应用数据</h3>
-      <p>设置（声音、触觉、彩屑、设计）和投掷历史仅存储在您的设备上，不会传输。</p>
-
-      <h3>3.3 Firebase Analytics & Crashlytics（Google）</h3>
-      <div class="highlight-box">
-        <p>本应用使用Google Ireland Limited提供的Firebase Analytics和Firebase Crashlytics服务。</p>
-      </div>
-      <ul>
-        <li>匿名应用实例ID（随机生成）</li>
-        <li>设备类型和iOS版本</li>
-        <li>应用崩溃报告</li>
-        <li>匿名使用统计（活跃用户、会话时长）</li>
-      </ul>
-      <p><strong>目的：</strong>提升应用稳定性。不收集姓名、电子邮件或位置数据。Google已获得EU-US数据隐私框架认证。</p>
-
-      <h2>4. 无追踪，无广告</h2>
-      <ul>
-        <li>不为广告目的共享个人数据</li>
-        <li>无跨应用追踪</li>
-        <li>Firebase仅用于技术改进</li>
-      </ul>
-
-      <h2>5. 您的权利</h2>
-      <p>您享有访问、更正、删除、限制处理和反对处理的权利。联系：<a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a></p>
+    <div class="actions">
+      <a class="btn primary" href="https://apps.apple.com" target="_blank" rel="noopener">Im App Store laden</a>
+      <a class="btn" href="https://ifinder91.github.io/Datenschutz/" target="_blank" rel="noopener">Datenschutz</a>
+      <a class="btn" href="mailto:evro89@hotmail.de">Support</a>
     </div>
+    <div class="footer">Kontakt: <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a><br/>Diese Seite dient als Marketing- und Support-Link für den App Store.</div>
+  </div>
 
-    <!-- ══════════════ हिन्दी ══════════════ -->
-    <div class="doc" id="doc-hi">
-      <div class="doc-header">
-        <h1>गोपनीयता नीति</h1>
-        <p class="date">अंतिम अपडेट: मार्च 2026 · ऐप: हेड्स या टेल्स जीतता है</p>
-      </div>
-      <h2>1. नियंत्रक</h2>
-      <p><strong>Evren Agsakal</strong><br>Brückelstr. 106, 47137 Duisburg, जर्मनी<br>ईमेल: <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a></p>
-
-      <h2>2. सामान्य जानकारी</h2>
-      <p>"हेड्स या टेल्स जीतता है" एक सरल सिक्का उछालने वाला ऐप है। यह बिना पंजीकरण, उपयोगकर्ता खाते या स्वयं के सर्वर के काम करता है।</p>
-
-      <h2>3. संसाधित डेटा</h2>
-      <h3>3.1 Apple App Store</h3>
-      <p>ऐप डाउनलोड करने के लिए Apple App Store आवश्यक है। Apple एक स्वतंत्र नियंत्रक के रूप में Apple ID, डिवाइस जानकारी और IP पता संसाधित करता है।</p>
-
-      <h3>3.2 स्थानीय ऐप डेटा</h3>
-      <p>सेटिंग्स और फ्लिप इतिहास केवल आपके डिवाइस पर स्थानीय रूप से संग्रहीत हैं। यह डेटा कभी प्रसारित नहीं होता।</p>
-
-      <h3>3.3 Firebase Analytics & Crashlytics (Google)</h3>
-      <div class="highlight-box">
-        <p>ऐप Google Ireland Limited की Firebase Analytics और Firebase Crashlytics सेवाओं का उपयोग करता है।</p>
-      </div>
-      <ul>
-        <li>अनाम ऐप इंस्टेंस ID (यादृच्छिक रूप से उत्पन्न)</li>
-        <li>डिवाइस प्रकार और iOS संस्करण</li>
-        <li>ऐप त्रुटियों पर क्रैश रिपोर्ट</li>
-        <li>अनाम उपयोग आंकड़े</li>
-      </ul>
-      <p><strong>उद्देश्य:</strong> ऐप स्थिरता में सुधार। कोई नाम, ईमेल या स्थान डेटा एकत्र नहीं किया जाता।</p>
-
-      <h2>4. कोई ट्रैकिंग नहीं, कोई विज्ञापन नहीं</h2>
-      <ul>
-        <li>विज्ञापन उद्देश्यों के लिए कोई व्यक्तिगत डेटा साझा नहीं</li>
-        <li>Firebase केवल तकनीकी सुधार के लिए उपयोग किया जाता है</li>
-      </ul>
-
-      <h2>5. आपके अधिकार</h2>
-      <p>आपको पहुंच, सुधार, हटाने और आपत्ति के अधिकार हैं। संपर्क: <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a></p>
+  <!-- ══ TÜRKÇE ══ -->
+  <div class="page" id="p-tr">
+    <h1>Yazı mı Tura mı Kazanır</h1>
+    <p class="subtitle">Tek bir kaydırmayla hızlı kararlar verin. Ses, titreşim, isteğe bağlı konfeti ve tahmin moduyla akıcı bir yazı-tura deneyimi. iPhone ve Apple Watch için.</p>
+    <div class="chips">
+      <span class="chip">Yazı-Tura</span>
+      <span class="chip">Apple Watch</span>
+      <span class="chip">Tahmin Modu</span>
+      <span class="chip">Ses &amp; Titreşim</span>
+      <span class="chip">Koyu &amp; Açık Mod</span>
     </div>
-
-    <!-- ══════════════ РУССКИЙ ══════════════ -->
-    <div class="doc" id="doc-ru">
-      <div class="doc-header">
-        <h1>Политика конфиденциальности</h1>
-        <p class="date">Последнее обновление: март 2026 · Приложение: Орёл или Решка</p>
-      </div>
-      <h2>1. Ответственное лицо</h2>
-      <p><strong>Evren Agsakal</strong><br>Brückelstr. 106, 47137 Duisburg, Германия<br>E-mail: <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a></p>
-
-      <h2>2. Общие сведения</h2>
-      <p>«Орёл или Решка» — простое приложение для подбрасывания монеты, работающее без регистрации, учётной записи и собственных серверов. Мы обрабатываем минимально необходимое количество данных.</p>
-
-      <h2>3. Обрабатываемые данные</h2>
-      <h3>3.1 Apple App Store</h3>
-      <p>Для загрузки и использования приложения требуется Apple App Store. Apple обрабатывает Apple ID, информацию об устройстве и IP-адрес как самостоятельный контролёр.</p>
-
-      <h3>3.2 Локальные данные приложения</h3>
-      <p>Настройки (звук, вибрация, конфетти, дизайны) и история бросков хранятся исключительно на вашем устройстве и никуда не передаются.</p>
-
-      <h3>3.3 Firebase Analytics & Crashlytics (Google)</h3>
-      <div class="highlight-box">
-        <p>Приложение использует сервисы Firebase Analytics и Firebase Crashlytics компании Google Ireland Limited.</p>
-      </div>
-      <ul>
-        <li>Анонимный идентификатор экземпляра приложения (генерируется случайно)</li>
-        <li>Тип устройства и версия iOS</li>
-        <li>Отчёты об аварийных завершениях при ошибках</li>
-        <li>Анонимная статистика использования (активные пользователи, длительность сеансов)</li>
-      </ul>
-      <p><strong>Цель:</strong> повышение стабильности приложения. Имена, адреса электронной почты и данные о местоположении не собираются. Google сертифицирован в рамках соглашения EU-US Data Privacy Framework.</p>
-
-      <h2>4. Без слежки и рекламы</h2>
-      <ul>
-        <li>Личные данные не передаются в рекламных целях</li>
-        <li>Отсутствует межприложенческое отслеживание</li>
-        <li>Firebase используется исключительно для технического улучшения</li>
-      </ul>
-
-      <h2>5. Ваши права</h2>
-      <p>Вы имеете право на доступ, исправление, удаление, ограничение обработки и возражение. Контакт: <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a></p>
+    <div class="grid">
+      <div class="feat"><b>Hızlı &amp; Adil</b><span>Anında rastgele sonuç — hızlı kararlar için mükemmel.</span></div>
+      <div class="feat"><b>Sonraki Atışı Tahmin Et</b><span>Atmadan önce yazı ya da tura seç ve kazançlarını takip et.</span></div>
+      <div class="feat"><b>Apple Watch Hazır</b><span>Bileğinizden animasyon, ses ve titreşimle atın.</span></div>
     </div>
-
-    <!-- ══════════════ ESPAÑOL ══════════════ -->
-    <div class="doc" id="doc-es">
-      <div class="doc-header">
-        <h1>Política de privacidad</h1>
-        <p class="date">Última actualización: marzo 2026 · Aplicación: Cara o Cruz</p>
-      </div>
-      <h2>1. Responsable</h2>
-      <p><strong>Evren Agsakal</strong><br>Brückelstr. 106, 47137 Duisburg, Alemania<br>Correo: <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a></p>
-
-      <h2>2. Descripción general</h2>
-      <p>«Cara o Cruz» es una sencilla aplicación de lanzamiento de moneda. Funciona sin registro, sin cuenta de usuario y sin servidores propios. Procesamos el mínimo de datos posible.</p>
-
-      <h2>3. Datos que procesamos</h2>
-      <h3>3.1 Apple App Store</h3>
-      <p>La descarga requiere el App Store de Apple. Apple procesa el Apple ID, información del dispositivo e IP como responsable independiente.</p>
-
-      <h3>3.2 Datos locales</h3>
-      <p>Los ajustes (sonido, háptica, confeti, diseños) y el historial de lanzamientos se almacenan solo en tu dispositivo y nunca se transmiten.</p>
-
-      <h3>3.3 Firebase Analytics & Crashlytics (Google)</h3>
-      <div class="highlight-box">
-        <p>La app usa Firebase Analytics y Firebase Crashlytics de Google Ireland Limited.</p>
-      </div>
-      <ul>
-        <li>ID de instancia de la app anónimo (generado aleatoriamente)</li>
-        <li>Tipo de dispositivo y versión de iOS</li>
-        <li>Informes de fallos en errores de la app</li>
-        <li>Estadísticas de uso anónimas (usuarios activos, duración de sesión)</li>
-      </ul>
-      <p><strong>Finalidad:</strong> mejorar la estabilidad de la app. No se recopilan nombres, correos ni datos de ubicación. Google está certificado bajo el Marco de Privacidad de Datos UE-EE.UU.</p>
-
-      <h2>4. Sin seguimiento, sin publicidad</h2>
-      <ul>
-        <li>No se comparten datos personales con fines publicitarios</li>
-        <li>No hay seguimiento entre aplicaciones</li>
-        <li>Firebase se usa solo para mejoras técnicas</li>
-      </ul>
-
-      <h2>5. Tus derechos</h2>
-      <p>Tienes derecho de acceso, rectificación, supresión, limitación y oposición. Contacto: <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a></p>
+    <div class="actions">
+      <a class="btn primary" href="https://apps.apple.com" target="_blank" rel="noopener">App Store'dan İndir</a>
+      <a class="btn" href="https://ifinder91.github.io/Datenschutz/" target="_blank" rel="noopener">Gizlilik Politikası</a>
+      <a class="btn" href="mailto:evro89@hotmail.de">Destek</a>
     </div>
+    <div class="footer">İletişim: <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a></div>
+  </div>
 
-    <!-- ══════════════ PORTUGUÊS ══════════════ -->
-    <div class="doc" id="doc-pt">
-      <div class="doc-header">
-        <h1>Política de Privacidade</h1>
-        <p class="date">Última atualização: março de 2026 · Aplicativo: Cara ou Coroa Vence</p>
-      </div>
-      <h2>1. Responsável</h2>
-      <p><strong>Evren Agsakal</strong><br>Brückelstr. 106, 47137 Duisburg, Alemanha<br>E-mail: <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a></p>
-
-      <h2>2. Visão Geral</h2>
-      <p>«Cara ou Coroa Vence» é um aplicativo simples de lançamento de moeda. Funciona sem cadastro, sem conta de usuário e sem servidores próprios.</p>
-
-      <h2>3. Dados Processados</h2>
-      <h3>3.1 Apple App Store</h3>
-      <p>O download exige a App Store da Apple. A Apple processa o Apple ID, informações do dispositivo e endereço IP como controlador independente.</p>
-
-      <h3>3.2 Dados Locais</h3>
-      <p>Configurações e histórico de lançamentos são armazenados apenas no seu dispositivo e nunca transmitidos.</p>
-
-      <h3>3.3 Firebase Analytics & Crashlytics (Google)</h3>
-      <div class="highlight-box">
-        <p>O aplicativo usa Firebase Analytics e Firebase Crashlytics da Google Ireland Limited.</p>
-      </div>
-      <ul>
-        <li>ID de instância do app anônimo (gerado aleatoriamente)</li>
-        <li>Tipo de dispositivo e versão do iOS</li>
-        <li>Relatórios de falhas em erros do app</li>
-        <li>Estatísticas de uso anônimas</li>
-      </ul>
-      <p><strong>Finalidade:</strong> melhorar a estabilidade do app. Nenhum nome, e-mail ou dado de localização é coletado. O Google é certificado pelo EU-US Data Privacy Framework.</p>
-
-      <h2>4. Sem Rastreamento, Sem Publicidade</h2>
-      <ul>
-        <li>Nenhum dado pessoal é compartilhado para fins publicitários</li>
-        <li>Firebase é usado apenas para melhoria técnica</li>
-      </ul>
-
-      <h2>5. Seus Direitos</h2>
-      <p>Você tem direito de acesso, retificação, exclusão, limitação e oposição. Contato: <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a></p>
+  <!-- ══ FRANÇAIS ══ -->
+  <div class="page" id="p-fr">
+    <h1>Pile ou Face Gagne</h1>
+    <p class="subtitle">Prenez des décisions rapides en un seul glissement. Profitez d'un lancer de pièce fluide avec son, haptique, confettis et un mode devinette. Sur iPhone et Apple Watch.</p>
+    <div class="chips">
+      <span class="chip">Lancer de pièce</span>
+      <span class="chip">Apple Watch</span>
+      <span class="chip">Mode devinette</span>
+      <span class="chip">Son &amp; Haptique</span>
+      <span class="chip">Mode sombre &amp; clair</span>
     </div>
-
-    <!-- ══════════════ العربية ══════════════ -->
-    <div class="doc" id="doc-ar" dir="rtl" style="text-align:right">
-      <div class="doc-header">
-        <h1>سياسة الخصوصية</h1>
-        <p class="date">آخر تحديث: مارس 2026 · التطبيق: وجه أم ذيل يفوز</p>
-      </div>
-      <h2>1. المسؤول</h2>
-      <p><strong>Evren Agsakal</strong><br>Brückelstr. 106, 47137 Duisburg, ألمانيا<br>البريد الإلكتروني: <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a></p>
-
-      <h2>2. نظرة عامة</h2>
-      <p>«وجه أم ذيل يفوز» تطبيق بسيط لقلب العملة. يعمل دون تسجيل أو حساب مستخدم أو خوادم خاصة. نعالج أقل قدر ممكن من البيانات.</p>
-
-      <h2>3. البيانات التي نعالجها</h2>
-      <h3>3.1 Apple App Store</h3>
-      <p>يتطلب تنزيل التطبيق استخدام متجر Apple. تعالج Apple معرف Apple ومعلومات الجهاز وعنوان IP بوصفها متحكمًا مستقلاً.</p>
-
-      <h3>3.2 البيانات المحلية</h3>
-      <p>الإعدادات وسجل القلبات مخزنة محليًا فقط على جهازك ولا تُنقل أبدًا.</p>
-
-      <h3>3.3 Firebase Analytics و Crashlytics (Google)</h3>
-      <div class="highlight-box">
-        <p>يستخدم التطبيق خدمات Firebase Analytics وFirebase Crashlytics من Google Ireland Limited.</p>
-      </div>
-      <ul style="padding-right:20px;padding-left:0">
-        <li>معرّف نسخة التطبيق المجهول (يُنشأ عشوائيًا)</li>
-        <li>نوع الجهاز وإصدار iOS</li>
-        <li>تقارير الأعطال عند حدوث أخطاء</li>
-        <li>إحصائيات استخدام مجهولة الهوية</li>
-      </ul>
-      <p><strong>الغرض:</strong> تحسين استقرار التطبيق. لا تُجمع أسماء أو بريد إلكتروني أو بيانات موقع. Google معتمدة بموجب إطار خصوصية البيانات بين الاتحاد الأوروبي والولايات المتحدة.</p>
-
-      <h2>4. لا تتبع، لا إعلانات</h2>
-      <ul style="padding-right:20px;padding-left:0">
-        <li>لا مشاركة للبيانات الشخصية لأغراض إعلانية</li>
-        <li>يُستخدم Firebase فقط للتحسين التقني</li>
-      </ul>
-
-      <h2>5. حقوقك</h2>
-      <p>لديك حق الوصول والتصحيح والحذف والتقييد والاعتراض. للتواصل: <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a></p>
+    <div class="grid">
+      <div class="feat"><b>Rapide &amp; Équitable</b><span>Résultat aléatoire instantané — parfait pour les choix rapides.</span></div>
+      <div class="feat"><b>Devinez le prochain lancer</b><span>Choisissez pile ou face avant le lancer et suivez vos victoires.</span></div>
+      <div class="feat"><b>Apple Watch prêt</b><span>Lancez au poignet avec animation, son et haptique.</span></div>
     </div>
-
-    <!-- ══════════════ 한국어 ══════════════ -->
-    <div class="doc" id="doc-ko">
-      <div class="doc-header">
-        <h1>개인정보 처리방침</h1>
-        <p class="date">최종 업데이트: 2026년 3월 · 앱: 앞면 또는 뒷면 승리</p>
-      </div>
-      <h2>1. 관리자</h2>
-      <p><strong>Evren Agsakal</strong><br>Brückelstr. 106, 47137 Duisburg, 독일<br>이메일: <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a></p>
-
-      <h2>2. 개요</h2>
-      <p>「앞면 또는 뒷면 승리」는 간단한 동전 던지기 앱입니다. 회원가입, 사용자 계정, 자체 서버 없이 작동합니다. 최소한의 데이터만 처리합니다.</p>
-
-      <h2>3. 처리하는 데이터</h2>
-      <h3>3.1 Apple App Store</h3>
-      <p>앱 다운로드에는 Apple App Store가 필요합니다. Apple은 독립적인 관리자로서 Apple ID, 기기 정보, IP 주소를 처리합니다.</p>
-
-      <h3>3.2 로컬 앱 데이터</h3>
-      <p>설정(사운드, 햅틱, 색종이, 디자인)과 던지기 기록은 기기에만 저장되며 전송되지 않습니다.</p>
-
-      <h3>3.3 Firebase Analytics & Crashlytics (Google)</h3>
-      <div class="highlight-box">
-        <p>앱은 Google Ireland Limited의 Firebase Analytics 및 Firebase Crashlytics를 사용합니다.</p>
-      </div>
-      <ul>
-        <li>익명 앱 인스턴스 ID (무작위 생성)</li>
-        <li>기기 유형 및 iOS 버전</li>
-        <li>앱 오류 시 충돌 보고서</li>
-        <li>익명 사용 통계 (활성 사용자, 세션 시간)</li>
-      </ul>
-      <p><strong>목적:</strong> 앱 안정성 향상. 이름, 이메일, 위치 데이터는 수집하지 않습니다. Google은 EU-US Data Privacy Framework 인증을 받았습니다.</p>
-
-      <h2>4. 추적 없음, 광고 없음</h2>
-      <ul>
-        <li>광고 목적의 개인 데이터 공유 없음</li>
-        <li>앱 간 추적 없음</li>
-        <li>Firebase는 기술적 개선에만 사용</li>
-      </ul>
-
-      <h2>5. 귀하의 권리</h2>
-      <p>접근, 수정, 삭제, 처리 제한 및 이의 제기 권리가 있습니다. 문의: <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a></p>
+    <div class="actions">
+      <a class="btn primary" href="https://apps.apple.com" target="_blank" rel="noopener">Télécharger sur l'App Store</a>
+      <a class="btn" href="https://ifinder91.github.io/Datenschutz/" target="_blank" rel="noopener">Confidentialité</a>
+      <a class="btn" href="mailto:evro89@hotmail.de">Support</a>
     </div>
+    <div class="footer">Contact : <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a></div>
+  </div>
 
-    <!-- ══════════════ ITALIANO ══════════════ -->
-    <div class="doc" id="doc-it">
-      <div class="doc-header">
-        <h1>Informativa sulla privacy</h1>
-        <p class="date">Ultimo aggiornamento: marzo 2026 · App: Testa o Croce Vince</p>
-      </div>
-      <h2>1. Titolare del trattamento</h2>
-      <p><strong>Evren Agsakal</strong><br>Brückelstr. 106, 47137 Duisburg, Germania<br>E-mail: <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a></p>
-
-      <h2>2. Panoramica</h2>
-      <p>«Testa o Croce Vince» è una semplice app per il lancio della moneta. Funziona senza registrazione, senza account utente e senza server propri. Trattiamo il minimo indispensabile di dati.</p>
-
-      <h2>3. Dati trattati</h2>
-      <h3>3.1 Apple App Store</h3>
-      <p>Il download dell'app richiede l'App Store di Apple. Apple tratta Apple ID, informazioni sul dispositivo e indirizzo IP come titolare autonomo.</p>
-
-      <h3>3.2 Dati locali dell'app</h3>
-      <p>Le impostazioni (suono, feedback aptico, coriandoli, design) e la cronologia dei lanci sono memorizzate esclusivamente sul dispositivo e non vengono mai trasmesse.</p>
-
-      <h3>3.3 Firebase Analytics & Crashlytics (Google)</h3>
-      <div class="highlight-box">
-        <p>L'app utilizza Firebase Analytics e Firebase Crashlytics di Google Ireland Limited, Gordon House, Barrow Street, Dublino 4, Irlanda.</p>
-      </div>
-      <ul>
-        <li>ID istanza app anonimo (generato casualmente)</li>
-        <li>Tipo di dispositivo e versione iOS</li>
-        <li>Report di arresti anomali in caso di errori</li>
-        <li>Statistiche di utilizzo anonime (utenti attivi, durata sessione)</li>
-      </ul>
-      <p><strong>Finalità:</strong> migliorare la stabilità dell'app. Non vengono raccolti nomi, indirizzi e-mail o dati di localizzazione. Google è certificato nell'ambito dell'EU-US Data Privacy Framework.</p>
-
-      <h2>4. Nessun tracciamento, nessuna pubblicità</h2>
-      <ul>
-        <li>Nessuna condivisione di dati personali a fini pubblicitari</li>
-        <li>Nessun tracciamento tra app</li>
-        <li>Firebase è utilizzato esclusivamente per miglioramenti tecnici</li>
-      </ul>
-
-      <h2>5. I tuoi diritti (GDPR)</h2>
-      <p>Hai diritto di accesso, rettifica, cancellazione, limitazione del trattamento e opposizione. Contatto: <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a></p>
+  <!-- ══ 日本語 ══ -->
+  <div class="page" id="p-ja">
+    <h1>表か裏かの勝利</h1>
+    <p class="subtitle">ひとつのスワイプで素早く決断。サウンド、触覚フィードバック、紙吹雪、予想モード付きのスムーズなコイン投げ。iPhoneとApple Watchで利用可能。</p>
+    <div class="chips">
+      <span class="chip">コイン投げ</span>
+      <span class="chip">Apple Watch</span>
+      <span class="chip">予想モード</span>
+      <span class="chip">サウンド &amp; 触覚</span>
+      <span class="chip">ダーク &amp; ライト</span>
     </div>
+    <div class="grid">
+      <div class="feat"><b>速くて公平</b><span>即座にランダムな結果 — 素早い決断に最適。</span></div>
+      <div class="feat"><b>次の結果を予想</b><span>投げる前に表か裏を選んで、正解数を追跡しよう。</span></div>
+      <div class="feat"><b>Apple Watch対応</b><span>アニメーション、サウンド、触覚フィードバック付きで手首から投げる。</span></div>
+    </div>
+    <div class="actions">
+      <a class="btn primary" href="https://apps.apple.com" target="_blank" rel="noopener">App Storeでダウンロード</a>
+      <a class="btn" href="https://ifinder91.github.io/Datenschutz/" target="_blank" rel="noopener">プライバシー</a>
+      <a class="btn" href="mailto:evro89@hotmail.de">サポート</a>
+    </div>
+    <div class="footer">連絡先: <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a></div>
+  </div>
 
-  </div><!-- /card -->
+  <!-- ══ 中文 ══ -->
+  <div class="page" id="p-zh">
+    <h1>正面还是反面</h1>
+    <p class="subtitle">只需一次滑动即可快速做决定。享受流畅的硬币翻转体验，配有声音、触觉反馈、彩屑效果和猜测模式。支持 iPhone 和 Apple Watch。</p>
+    <div class="chips">
+      <span class="chip">硬币翻转</span>
+      <span class="chip">Apple Watch</span>
+      <span class="chip">猜测模式</span>
+      <span class="chip">声音 &amp; 触觉</span>
+      <span class="chip">深色 &amp; 浅色模式</span>
+    </div>
+    <div class="grid">
+      <div class="feat"><b>快速 &amp; 公平</b><span>即时随机结果 — 非常适合快速做决定。</span></div>
+      <div class="feat"><b>猜测下一次翻转</b><span>在投掷前选择正面或反面，追踪你的胜利。</span></div>
+      <div class="feat"><b>支持 Apple Watch</b><span>在手腕上翻转硬币，带有流畅动画、声音和触觉反馈。</span></div>
+    </div>
+    <div class="actions">
+      <a class="btn primary" href="https://apps.apple.com" target="_blank" rel="noopener">在 App Store 下载</a>
+      <a class="btn" href="https://ifinder91.github.io/Datenschutz/" target="_blank" rel="noopener">隐私政策</a>
+      <a class="btn" href="mailto:evro89@hotmail.de">支持</a>
+    </div>
+    <div class="footer">联系方式: <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a></div>
+  </div>
 
-  <footer>
-    <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a> ·
-    Evren Agsakal · Duisburg, Deutschland
-  </footer>
-</div>
+  <!-- ══ हिन्दी ══ -->
+  <div class="page" id="p-hi">
+    <h1>हेड्स या टेल्स जीतता है</h1>
+    <p class="subtitle">एक स्वाइप से त्वरित निर्णय लें। ध्वनि, हैप्टिक्स, कन्फेटी और अनुमान मोड के साथ सहज सिक्का उछालने का अनुभव। iPhone और Apple Watch पर उपलब्ध।</p>
+    <div class="chips">
+      <span class="chip">सिक्का उछालना</span>
+      <span class="chip">Apple Watch</span>
+      <span class="chip">अनुमान मोड</span>
+      <span class="chip">ध्वनि &amp; हैप्टिक्स</span>
+      <span class="chip">डार्क &amp; लाइट मोड</span>
+    </div>
+    <div class="grid">
+      <div class="feat"><b>तेज़ &amp; निष्पक्ष</b><span>तुरंत यादृच्छिक परिणाम — त्वरित निर्णयों के लिए बिल्कुल सही।</span></div>
+      <div class="feat"><b>अगला फ्लिप अनुमान करें</b><span>उछालने से पहले हेड या टेल चुनें और अपनी जीत ट्रैक करें।</span></div>
+      <div class="feat"><b>Apple Watch तैयार</b><span>कलाई से एनिमेशन, ध्वनि और हैप्टिक्स के साथ उछालें।</span></div>
+    </div>
+    <div class="actions">
+      <a class="btn primary" href="https://apps.apple.com" target="_blank" rel="noopener">App Store पर डाउनलोड करें</a>
+      <a class="btn" href="https://ifinder91.github.io/Datenschutz/" target="_blank" rel="noopener">गोपनीयता नीति</a>
+      <a class="btn" href="mailto:evro89@hotmail.de">सहायता</a>
+    </div>
+    <div class="footer">संपर्क: <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a></div>
+  </div>
+
+  <!-- ══ РУССКИЙ ══ -->
+  <div class="page" id="p-ru">
+    <h1>Орёл или Решка</h1>
+    <p class="subtitle">Принимайте быстрые решения одним свайпом. Плавное подбрасывание монеты со звуком, вибрацией, конфетти и режимом угадывания. Для iPhone и Apple Watch.</p>
+    <div class="chips">
+      <span class="chip">Подбрасывание монеты</span>
+      <span class="chip">Apple Watch</span>
+      <span class="chip">Режим угадывания</span>
+      <span class="chip">Звук &amp; Вибрация</span>
+      <span class="chip">Тёмный &amp; Светлый режим</span>
+    </div>
+    <div class="grid">
+      <div class="feat"><b>Быстро &amp; Честно</b><span>Мгновенный случайный результат — идеально для быстрых решений.</span></div>
+      <div class="feat"><b>Угадай следующий бросок</b><span>Выбери орёл или решку до броска и отслеживай победы.</span></div>
+      <div class="feat"><b>Apple Watch готов</b><span>Бросай монету с запястья с анимацией, звуком и вибрацией.</span></div>
+    </div>
+    <div class="actions">
+      <a class="btn primary" href="https://apps.apple.com" target="_blank" rel="noopener">Скачать в App Store</a>
+      <a class="btn" href="https://ifinder91.github.io/Datenschutz/" target="_blank" rel="noopener">Конфиденциальность</a>
+      <a class="btn" href="mailto:evro89@hotmail.de">Поддержка</a>
+    </div>
+    <div class="footer">Контакт: <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a></div>
+  </div>
+
+  <!-- ══ ESPAÑOL ══ -->
+  <div class="page" id="p-es">
+    <h1>Cara o Cruz Gana</h1>
+    <p class="subtitle">Toma decisiones rápidas con un solo deslizamiento. Disfruta de un lanzamiento de moneda fluido con sonido, háptica, confeti y modo de adivinanza. En iPhone y Apple Watch.</p>
+    <div class="chips">
+      <span class="chip">Lanzamiento de moneda</span>
+      <span class="chip">Apple Watch</span>
+      <span class="chip">Modo adivinanza</span>
+      <span class="chip">Sonido &amp; Háptica</span>
+      <span class="chip">Modo oscuro &amp; claro</span>
+    </div>
+    <div class="grid">
+      <div class="feat"><b>Rápido &amp; Justo</b><span>Resultado aleatorio instantáneo — perfecto para decisiones rápidas.</span></div>
+      <div class="feat"><b>Adivina el siguiente lanzamiento</b><span>Elige cara o cruz antes de lanzar y sigue tus victorias.</span></div>
+      <div class="feat"><b>Apple Watch listo</b><span>Lanza desde tu muñeca con animación, sonido y háptica.</span></div>
+    </div>
+    <div class="actions">
+      <a class="btn primary" href="https://apps.apple.com" target="_blank" rel="noopener">Descargar en el App Store</a>
+      <a class="btn" href="https://ifinder91.github.io/Datenschutz/" target="_blank" rel="noopener">Privacidad</a>
+      <a class="btn" href="mailto:evro89@hotmail.de">Soporte</a>
+    </div>
+    <div class="footer">Contacto: <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a></div>
+  </div>
+
+  <!-- ══ PORTUGUÊS ══ -->
+  <div class="page" id="p-pt">
+    <h1>Cara ou Coroa Vence</h1>
+    <p class="subtitle">Tome decisões rápidas com um único deslize. Aproveite um lançamento de moeda suave com som, vibração, confete e modo de adivinhação. No iPhone e Apple Watch.</p>
+    <div class="chips">
+      <span class="chip">Lançamento de moeda</span>
+      <span class="chip">Apple Watch</span>
+      <span class="chip">Modo adivinhação</span>
+      <span class="chip">Som &amp; Vibração</span>
+      <span class="chip">Modo escuro &amp; claro</span>
+    </div>
+    <div class="grid">
+      <div class="feat"><b>Rápido &amp; Justo</b><span>Resultado aleatório instantâneo — perfeito para decisões rápidas.</span></div>
+      <div class="feat"><b>Adivinhe o próximo lançamento</b><span>Escolha cara ou coroa antes de lançar e acompanhe suas vitórias.</span></div>
+      <div class="feat"><b>Apple Watch pronto</b><span>Lance do pulso com animação, som e vibração.</span></div>
+    </div>
+    <div class="actions">
+      <a class="btn primary" href="https://apps.apple.com" target="_blank" rel="noopener">Baixar na App Store</a>
+      <a class="btn" href="https://ifinder91.github.io/Datenschutz/" target="_blank" rel="noopener">Privacidade</a>
+      <a class="btn" href="mailto:evro89@hotmail.de">Suporte</a>
+    </div>
+    <div class="footer">Contato: <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a></div>
+  </div>
+
+  <!-- ══ العربية ══ -->
+  <div class="page" id="p-ar" dir="rtl" style="text-align:right">
+    <h1>وجه أم ذيل يفوز</h1>
+    <p class="subtitle">اتخذ قرارات سريعة بسحبة واحدة. استمتع بتجربة قلب عملة سلسة مع الصوت والاهتزاز والقصاصات ووضع التخمين. متاح على iPhone وApple Watch.</p>
+    <div class="chips">
+      <span class="chip">قلب العملة</span>
+      <span class="chip">Apple Watch</span>
+      <span class="chip">وضع التخمين</span>
+      <span class="chip">صوت &amp; اهتزاز</span>
+      <span class="chip">وضع داكن &amp; فاتح</span>
+    </div>
+    <div class="grid">
+      <div class="feat"><b>سريع &amp; عادل</b><span>نتيجة عشوائية فورية — مثالية للقرارات السريعة.</span></div>
+      <div class="feat"><b>خمّن القلبة التالية</b><span>اختر وجهًا أو ذيلًا قبل الرمي وتتبع انتصاراتك.</span></div>
+      <div class="feat"><b>جاهز لـ Apple Watch</b><span>ارمِ من معصمك مع رسوم متحركة وصوت واهتزاز.</span></div>
+    </div>
+    <div class="actions" style="justify-content:flex-end">
+      <a class="btn primary" href="https://apps.apple.com" target="_blank" rel="noopener">تحميل من App Store</a>
+      <a class="btn" href="https://ifinder91.github.io/Datenschutz/" target="_blank" rel="noopener">الخصوصية</a>
+      <a class="btn" href="mailto:evro89@hotmail.de">الدعم</a>
+    </div>
+    <div class="footer">التواصل: <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a></div>
+  </div>
+
+  <!-- ══ 한국어 ══ -->
+  <div class="page" id="p-ko">
+    <h1>앞면 또는 뒷면 승리</h1>
+    <p class="subtitle">한 번의 스와이프로 빠른 결정을 내리세요. 사운드, 햅틱, 색종이, 추측 모드가 있는 부드러운 동전 던지기. iPhone과 Apple Watch에서 이용 가능.</p>
+    <div class="chips">
+      <span class="chip">동전 던지기</span>
+      <span class="chip">Apple Watch</span>
+      <span class="chip">추측 모드</span>
+      <span class="chip">사운드 &amp; 햅틱</span>
+      <span class="chip">다크 &amp; 라이트 모드</span>
+    </div>
+    <div class="grid">
+      <div class="feat"><b>빠르고 공정함</b><span>즉각적인 무작위 결과 — 빠른 선택에 완벽합니다.</span></div>
+      <div class="feat"><b>다음 결과 추측</b><span>던지기 전에 앞면이나 뒷면을 선택하고 승리를 추적하세요.</span></div>
+      <div class="feat"><b>Apple Watch 지원</b><span>애니메이션, 사운드, 햅틱으로 손목에서 던지세요.</span></div>
+    </div>
+    <div class="actions">
+      <a class="btn primary" href="https://apps.apple.com" target="_blank" rel="noopener">App Store에서 다운로드</a>
+      <a class="btn" href="https://ifinder91.github.io/Datenschutz/" target="_blank" rel="noopener">개인정보처리방침</a>
+      <a class="btn" href="mailto:evro89@hotmail.de">지원</a>
+    </div>
+    <div class="footer">연락처: <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a></div>
+  </div>
+
+  <!-- ══ ITALIANO ══ -->
+  <div class="page" id="p-it">
+    <h1>Testa o Croce Vince</h1>
+    <p class="subtitle">Prendi decisioni rapide con un solo gesto. Goditi un lancio della moneta fluido con suono, feedback aptico, coriandoli e modalità indovina. Su iPhone e Apple Watch.</p>
+    <div class="chips">
+      <span class="chip">Lancio della moneta</span>
+      <span class="chip">Apple Watch</span>
+      <span class="chip">Modalità indovina</span>
+      <span class="chip">Suono &amp; Aptico</span>
+      <span class="chip">Modalità scura &amp; chiara</span>
+    </div>
+    <div class="grid">
+      <div class="feat"><b>Veloce &amp; Equo</b><span>Risultato casuale istantaneo — perfetto per scelte rapide.</span></div>
+      <div class="feat"><b>Indovina il prossimo lancio</b><span>Scegli testa o croce prima del lancio e tieni traccia delle vittorie.</span></div>
+      <div class="feat"><b>Apple Watch pronto</b><span>Lancia dal polso con animazione, suono e feedback aptico.</span></div>
+    </div>
+    <div class="actions">
+      <a class="btn primary" href="https://apps.apple.com" target="_blank" rel="noopener">Scarica sull'App Store</a>
+      <a class="btn" href="https://ifinder91.github.io/Datenschutz/" target="_blank" rel="noopener">Privacy</a>
+      <a class="btn" href="mailto:evro89@hotmail.de">Supporto</a>
+    </div>
+    <div class="footer">Contatto: <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a></div>
+  </div>
+
+</div></div>
 
 <script>
   function switchLang(lang) {
-    document.querySelectorAll('.doc').forEach(d => d.classList.remove('active'));
-    const target = document.getElementById('doc-' + lang);
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    const target = document.getElementById('p-' + lang);
     if (target) target.classList.add('active');
     document.documentElement.lang = lang;
-    // RTL for Arabic
     document.body.style.direction = lang === 'ar' ? 'rtl' : 'ltr';
   }
 
-  // Auto-detect browser language on load
-  const browserLang = navigator.language.slice(0,2);
-  const supported = ['de','en','tr','fr','ja','zh','hi','ru','es','pt','ar','ko','it'];
-  const detected = supported.includes(browserLang) ? browserLang : 'de';
+  const map = { 'zh-TW':'zh','zh-CN':'zh','pt-BR':'pt','pt-PT':'pt','fr-CA':'fr','fr-FR':'fr' };
+  const raw = navigator.language || 'en';
+  const full = raw.replace('-','_');
+  const short = raw.slice(0,2);
+  const supported = ['en','de','tr','fr','ja','zh','hi','ru','es','pt','ar','ko','it'];
+  const detected = map[full] || map[raw] || (supported.includes(short) ? short : 'en');
   document.getElementById('langSelect').value = detected;
   switchLang(detected);
 </script>
