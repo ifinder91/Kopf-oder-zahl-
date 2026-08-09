@@ -4,9 +4,10 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Heads or Tails Wins</title>
-  <meta name="description" content="Make quick decisions with a single swipe. A smooth coin flip with sound, haptics, and Apple Watch support." />
+  <meta name="description" content="Decide with one flick. A coin that really tumbles, rolls and settles — with sound, haptics and a physics engine. Now with augmented reality and Coin Pong. " />
+  <meta name="theme-color" content="#0b0b0f" />
   <style>
-    :root{
+    :root {
       --bg:#0b0b0f;
       --card:rgba(255,255,255,.06);
       --stroke:rgba(255,255,255,.12);
@@ -18,8 +19,8 @@
       --btnHover:rgba(255,255,255,.18);
       --accent:#7dd3fc;
     }
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body {
       font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display",Segoe UI,Roboto,Helvetica,Arial,sans-serif;
       background:
         radial-gradient(1200px 800px at 20% 10%, rgba(125,211,252,.11), transparent 60%),
@@ -27,131 +28,125 @@
         var(--bg);
       color:var(--text);
       min-height:100vh;
+      -webkit-font-smoothing:antialiased;
     }
 
-    /* ── NAV ── */
-    nav{
-      position:sticky;
-      top:0;
-      z-index:100;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
+    nav {
+      position:sticky; top:0; z-index:100;
+      display:flex; align-items:center; justify-content:space-between;
       padding:13px 22px;
       background:rgba(11,11,15,.82);
       backdrop-filter:blur(14px);
       border-bottom:1px solid rgba(255,255,255,.08);
     }
-    .nav-logo{
-      font-size:15px;
-      font-weight:700;
-      letter-spacing:-.01em;
-      color:var(--accent);
-    }
-    .lang-select{
+    .nav-logo { font-size:15px; font-weight:700; letter-spacing:-.01em; color:var(--accent); }
+    .lang-select {
       appearance:none;
       background:rgba(255,255,255,.08);
       border:1px solid rgba(255,255,255,.16);
       border-radius:10px;
-      color:var(--text);
-      font-size:13px;
+      color:var(--text); font-size:13px;
       padding:6px 28px 6px 11px;
-      cursor:pointer;
-      outline:none;
+      cursor:pointer; outline:none;
       background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='rgba(255,255,255,.45)' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-      background-repeat:no-repeat;
-      background-position:right 9px center;
-      transition:border-color .15s,background-color .15s;
+      background-repeat:no-repeat; background-position:right 9px center;
+      transition:border-color .15s, background-color .15s;
     }
-    .lang-select:hover{border-color:rgba(125,211,252,.45);background-color:rgba(255,255,255,.13);}
-    .lang-select option{background:#1a1a24;color:#fff;}
+    .lang-select:hover { border-color:rgba(125,211,252,.45); background-color:rgba(255,255,255,.13); }
+    .lang-select option { background:#1a1a24; color:#fff; }
 
-    /* ── LAYOUT ── */
-    .wrap{max-width:940px;margin:0 auto;padding:52px 18px 52px;}
-    .card{
+    .wrap { max-width:960px; margin:0 auto; padding:52px 18px; }
+    .card {
       background:var(--card);
       border:1px solid var(--stroke);
       border-radius:28px;
-      padding:32px;
+      padding:34px;
       backdrop-filter:blur(10px);
       box-shadow:0 20px 60px rgba(0,0,0,.4);
     }
 
-    /* ── CONTENT BLOCKS ── */
-    .page{display:none;}
-    .page.active{display:block;}
+    .page { display:none; }
+    .page.active { display:block; }
 
-    h1{font-size:34px;letter-spacing:-.02em;line-height:1.18;}
-    .subtitle{
-      margin:12px 0 0;
-      color:var(--muted);
-      line-height:1.6;
-      max-width:60ch;
-      font-size:15.5px;
+    /* Kopfbereich mit Münze */
+    .hero { display:flex; align-items:center; gap:22px; }
+    .coin {
+      flex:none;
+      font-size:60px; line-height:1;
+      filter:drop-shadow(0 8px 26px rgba(125,211,252,.30));
+      animation:kippen 7s ease-in-out infinite;
     }
-    .chips{
-      margin-top:20px;
-      display:flex;flex-wrap:wrap;gap:9px;
+    @keyframes kippen {
+      0%,100% { transform:rotate(-7deg); }
+      50%     { transform:rotate(7deg); }
     }
-    .chip{
-      display:inline-flex;align-items:center;
-      padding:8px 13px;
-      border-radius:999px;
-      background:var(--chip);
-      border:1px solid var(--chipStroke);
-      color:rgba(255,255,255,.84);
-      font-size:13px;
-      white-space:nowrap;
+    @media (prefers-reduced-motion:reduce) {
+      .coin { animation:none; }
     }
-    .grid{
+
+    h1 { font-size:34px; letter-spacing:-.02em; line-height:1.18; }
+    .subtitle { margin-top:12px; color:var(--muted); line-height:1.65; max-width:62ch; font-size:15.5px; }
+
+    .chips { margin-top:22px; display:flex; flex-wrap:wrap; gap:9px; }
+    .chip {
+      display:inline-flex; align-items:center;
+      padding:8px 13px; border-radius:999px;
+      background:var(--chip); border:1px solid var(--chipStroke);
+      color:rgba(255,255,255,.84); font-size:13px; white-space:nowrap;
+    }
+
+    .grid {
       margin-top:24px;
-      display:grid;
-      grid-template-columns:repeat(3,minmax(0,1fr));
-      gap:12px;
+      display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px;
     }
-    .feat{
+    .feat {
       border-radius:18px;
       border:1px solid rgba(255,255,255,.09);
       background:rgba(255,255,255,.03);
-      padding:16px 15px 14px;
+      padding:17px 16px 15px;
+      transition:border-color .18s, background .18s, transform .18s;
     }
-    .feat b{display:block;font-size:14px;margin-bottom:7px;color:rgba(255,255,255,.95);}
-    .feat span{display:block;color:var(--muted);font-size:13px;line-height:1.5;}
-    .actions{
-      margin-top:20px;
-      display:flex;flex-wrap:wrap;gap:10px;
+    .feat:hover {
+      border-color:rgba(125,211,252,.26);
+      background:rgba(255,255,255,.055);
+      transform:translateY(-2px);
     }
-    .btn{
-      display:inline-flex;align-items:center;justify-content:center;
-      padding:10px 16px;
-      border-radius:14px;
-      background:var(--btn);
-      border:1px solid rgba(255,255,255,.14);
-      color:rgba(255,255,255,.90);
-      text-decoration:none;
-      font-size:14px;
-      transition:all .15s ease;
-      white-space:nowrap;
-    }
-    .btn:hover{background:var(--btnHover);}
-    .btn.primary{
-      background:rgba(125,211,252,.13);
-      border-color:rgba(125,211,252,.32);
-      color:#eaf7ff;
-    }
-    .footer{
-      margin-top:16px;
-      color:rgba(255,255,255,.50);
-      font-size:12.5px;
-      line-height:1.6;
-    }
-    .footer a{color:var(--accent);text-decoration:none;}
-    .footer a:hover{text-decoration:underline;}
+    .feat b { display:block; font-size:14px; margin-bottom:7px; color:rgba(255,255,255,.95); }
+    .feat span { display:block; color:var(--muted); font-size:13px; line-height:1.55; }
 
-    @media(max-width:700px){
-      .grid{grid-template-columns:1fr;}
-      h1{font-size:28px;}
-      .card{padding:22px 18px;}
+    .actions { margin-top:24px; display:flex; flex-wrap:wrap; gap:10px; }
+    .btn {
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:11px 17px; border-radius:14px;
+      background:var(--btn); border:1px solid rgba(255,255,255,.14);
+      color:rgba(255,255,255,.90); text-decoration:none;
+      font-size:14px; white-space:nowrap;
+      transition:all .15s ease;
+    }
+    .btn:hover { background:var(--btnHover); }
+    .btn.primary {
+      background:rgba(125,211,252,.14);
+      border-color:rgba(125,211,252,.34);
+      color:#eaf7ff; font-weight:600;
+    }
+    .btn.primary:hover {
+      background:rgba(125,211,252,.22);
+      border-color:rgba(125,211,252,.5);
+    }
+
+    .footer { margin-top:18px; color:rgba(255,255,255,.50); font-size:12.5px; line-height:1.6; }
+    .footer a { color:var(--accent); text-decoration:none; }
+    .footer a:hover { text-decoration:underline; }
+
+    @media (max-width:820px) {
+      .grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    }
+    @media (max-width:560px) {
+      .grid { grid-template-columns:1fr; }
+      h1 { font-size:27px; }
+      .card { padding:22px 18px; }
+      .hero { gap:16px; }
+      .coin { font-size:46px; }
     }
   </style>
 </head>
@@ -159,334 +154,490 @@
 
 <nav>
   <span class="nav-logo">🪙 Heads or Tails Wins</span>
-  <select class="lang-select" id="langSelect" onchange="switchLang(this.value)">
-    <option value="en">🇬🇧 English</option>
-    <option value="de">🇩🇪 Deutsch</option>
-    <option value="tr">🇹🇷 Türkçe</option>
-    <option value="fr">🇫🇷 Français</option>
-    <option value="ja">🇯🇵 日本語</option>
-    <option value="zh">🇨🇳 中文</option>
-    <option value="hi">🇮🇳 हिन्दी</option>
-    <option value="ru">🇷🇺 Русский</option>
-    <option value="es">🇪🇸 Español</option>
-    <option value="pt">🇧🇷 Português</option>
-    <option value="ar">🇸🇦 العربية</option>
-    <option value="ko">🇰🇷 한국어</option>
-    <option value="it">🇮🇹 Italiano</option>
+  <select class="lang-select" id="langSelect" onchange="switchLang(this.value)" aria-label="Language">
+      <option value="en">🇬🇧 English</option>
+      <option value="de">🇩🇪 Deutsch</option>
+      <option value="tr">🇹🇷 Türkçe</option>
+      <option value="fr">🇫🇷 Français</option>
+      <option value="ja">🇯🇵 日本語</option>
+      <option value="zh">🇨🇳 中文</option>
+      <option value="hi">🇮🇳 हिन्दी</option>
+      <option value="ru">🇷🇺 Русский</option>
+      <option value="es">🇪🇸 Español</option>
+      <option value="pt">🇧🇷 Português</option>
+      <option value="ar">🇸🇦 العربية</option>
+      <option value="ko">🇰🇷 한국어</option>
+      <option value="it">🇮🇹 Italiano</option>
   </select>
 </nav>
 
 <div class="wrap"><div class="card">
 
-  <!-- ══ ENGLISH ══ -->
-  <div class="page" id="p-en">
-    <h1>Heads or Tails Wins</h1>
-    <p class="subtitle">Make quick decisions with a single swipe. Enjoy a smooth coin flip with sound, haptics, optional confetti, and a guessing mode. Available on iPhone and Apple Watch.</p>
+  <div class="page active" id="p-en">
+    <div class="hero">
+      <div class="coin" aria-hidden="true">🪙</div>
+      <div>
+        <h1>Heads or Tails Wins</h1>
+        <p class="subtitle">Decide with one flick. A coin that really tumbles, rolls and settles — with sound, haptics and a physics engine. Now with augmented reality and Coin Pong. On iPhone and Apple Watch.</p>
+      </div>
+    </div>
+
     <div class="chips">
-      <span class="chip">Coin Flip</span>
-      <span class="chip">Apple Watch</span>
-      <span class="chip">Guess Mode</span>
-      <span class="chip">Sound &amp; Haptics</span>
-      <span class="chip">Dark &amp; Light Mode</span>
+        <span class="chip">Coin Flip</span>
+        <span class="chip">Augmented Reality</span>
+        <span class="chip">Coin Pong</span>
+        <span class="chip">Your Own Coin</span>
+        <span class="chip">Apple Watch</span>
+        <span class="chip">Sound & Haptics</span>
     </div>
+
     <div class="grid">
-      <div class="feat"><b>Fast &amp; Fair</b><span>Get a random result instantly — perfect for quick choices.</span></div>
-      <div class="feat"><b>Guess the Next Flip</b><span>Pick heads or tails before the throw and track your wins.</span></div>
-      <div class="feat"><b>Apple Watch Ready</b><span>Flip on your wrist with smooth animation, sound, and haptics.</span></div>
+        <div class="feat"><b>Fast & Fair</b><span>An honest random result in a moment — for every quick decision.</span></div>
+        <div class="feat"><b>Guess the Flip</b><span>Call heads or tails before the throw and track your streak.</span></div>
+        <div class="feat"><b>Apple Watch</b><span>Flip from your wrist, with animation, sound and haptics.</span></div>
+        <div class="feat"><b>Throw It in Your Room</b><span>Point the camera at a table and flick a real-sized coin onto it.</span></div>
+        <div class="feat"><b>Coin Pong</b><span>Ten cups, one coin. Clear them all in as few throws as you can.</span></div>
+        <div class="feat"><b>Your Own Coin</b><span>Two photos of your choice become both sides of your coin.</span></div>
     </div>
+
     <div class="actions">
-      <a class="btn primary" href="https://apps.apple.com" target="_blank" rel="noopener">Download on the App Store</a>
+      <a class="btn primary" href="https://apps.apple.com/app/id6755661393" target="_blank" rel="noopener">Download on the App Store</a>
       <a class="btn" href="https://ifinder91.github.io/Datenschutz/" target="_blank" rel="noopener">Privacy Policy</a>
       <a class="btn" href="mailto:evro89@hotmail.de">Support</a>
     </div>
-    <div class="footer">Contact: <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a><br/>This page is provided for App Store marketing and support links.</div>
+
+    <div class="footer">Contact: <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a></div>
   </div>
 
-  <!-- ══ DEUTSCH ══ -->
   <div class="page" id="p-de">
-    <h1>Kopf oder Zahl gewinnt</h1>
-    <p class="subtitle">Triff schnelle Entscheidungen mit nur einem Wisch. Genieße einen flüssigen Münzwurf mit Sound, Haptik, optionalem Konfetti und einem Tipp-Modus. Für iPhone und Apple Watch.</p>
+    <div class="hero">
+      <div class="coin" aria-hidden="true">🪙</div>
+      <div>
+        <h1>Kopf oder Zahl gewinnt</h1>
+        <p class="subtitle">Entscheide dich mit einem Schnippen. Eine Münze, die sich wirklich überschlägt, rollt und auskippelt — mit Ton, Haptik und echter Physik. Jetzt mit erweiterter Realität und Münzpong. Für iPhone und Apple Watch.</p>
+      </div>
+    </div>
+
     <div class="chips">
-      <span class="chip">Münzwurf</span>
-      <span class="chip">Apple Watch</span>
-      <span class="chip">Tipp-Modus</span>
-      <span class="chip">Sound &amp; Haptik</span>
-      <span class="chip">Dark &amp; Light Mode</span>
+        <span class="chip">Münzwurf</span>
+        <span class="chip">Erweiterte Realität</span>
+        <span class="chip">Münzpong</span>
+        <span class="chip">Eigene Münze</span>
+        <span class="chip">Apple Watch</span>
+        <span class="chip">Ton & Haptik</span>
     </div>
+
     <div class="grid">
-      <div class="feat"><b>Schnell &amp; Fair</b><span>Sofortiges Zufallsergebnis — perfekt für schnelle Entscheidungen.</span></div>
-      <div class="feat"><b>Nächsten Wurf tippen</b><span>Tippe Kopf oder Zahl vor dem Wurf und verfolge deine Treffer.</span></div>
-      <div class="feat"><b>Apple Watch bereit</b><span>Wirf die Münze am Handgelenk mit Animation, Sound und Haptik.</span></div>
+        <div class="feat"><b>Schnell & fair</b><span>Ein ehrliches Zufallsergebnis im Augenblick — für jede schnelle Entscheidung.</span></div>
+        <div class="feat"><b>Den Wurf tippen</b><span>Sag Kopf oder Zahl vorher an und verfolge deine Serie.</span></div>
+        <div class="feat"><b>Apple Watch</b><span>Wirf am Handgelenk, mit Animation, Ton und Haptik.</span></div>
+        <div class="feat"><b>Wirf in deinem Zimmer</b><span>Richte die Kamera auf einen Tisch und schnipp eine Münze in echter Größe darauf.</span></div>
+        <div class="feat"><b>Münzpong</b><span>Zehn Becher, eine Münze. Leere alle mit möglichst wenigen Würfen.</span></div>
+        <div class="feat"><b>Deine eigene Münze</b><span>Zwei Fotos deiner Wahl werden zu den beiden Seiten deiner Münze.</span></div>
     </div>
+
     <div class="actions">
-      <a class="btn primary" href="https://apps.apple.com" target="_blank" rel="noopener">Im App Store laden</a>
+      <a class="btn primary" href="https://apps.apple.com/app/id6755661393" target="_blank" rel="noopener">Im App Store laden</a>
       <a class="btn" href="https://ifinder91.github.io/Datenschutz/" target="_blank" rel="noopener">Datenschutz</a>
       <a class="btn" href="mailto:evro89@hotmail.de">Support</a>
     </div>
-    <div class="footer">Kontakt: <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a><br/>Diese Seite dient als Marketing- und Support-Link für den App Store.</div>
+
+    <div class="footer">Kontakt: <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a></div>
   </div>
 
-  <!-- ══ TÜRKÇE ══ -->
   <div class="page" id="p-tr">
-    <h1>Yazı mı Tura mı Kazanır</h1>
-    <p class="subtitle">Tek bir kaydırmayla hızlı kararlar verin. Ses, titreşim, isteğe bağlı konfeti ve tahmin moduyla akıcı bir yazı-tura deneyimi. iPhone ve Apple Watch için.</p>
+    <div class="hero">
+      <div class="coin" aria-hidden="true">🪙</div>
+      <div>
+        <h1>Yazı mı Tura mı Kazanır</h1>
+        <p class="subtitle">Tek bir fiskeyle karar ver. Gerçekten takla atan, yuvarlanan ve duran bir para — sesle, titreşimle ve gerçek fizikle. Artık artırılmış gerçeklik ve Bozuk Para Pong ile. iPhone ve Apple Watch için.</p>
+      </div>
+    </div>
+
     <div class="chips">
-      <span class="chip">Yazı-Tura</span>
-      <span class="chip">Apple Watch</span>
-      <span class="chip">Tahmin Modu</span>
-      <span class="chip">Ses &amp; Titreşim</span>
-      <span class="chip">Koyu &amp; Açık Mod</span>
+        <span class="chip">Yazı-Tura</span>
+        <span class="chip">Artırılmış Gerçeklik</span>
+        <span class="chip">Bozuk Para Pong</span>
+        <span class="chip">Kendi Paran</span>
+        <span class="chip">Apple Watch</span>
+        <span class="chip">Ses & Titreşim</span>
     </div>
+
     <div class="grid">
-      <div class="feat"><b>Hızlı &amp; Adil</b><span>Anında rastgele sonuç — hızlı kararlar için mükemmel.</span></div>
-      <div class="feat"><b>Sonraki Atışı Tahmin Et</b><span>Atmadan önce yazı ya da tura seç ve kazançlarını takip et.</span></div>
-      <div class="feat"><b>Apple Watch Hazır</b><span>Bileğinizden animasyon, ses ve titreşimle atın.</span></div>
+        <div class="feat"><b>Hızlı & adil</b><span>Anında dürüst bir rastgele sonuç — her hızlı karar için.</span></div>
+        <div class="feat"><b>Atışı tahmin et</b><span>Atmadan önce yazı ya da tura de ve serini takip et.</span></div>
+        <div class="feat"><b>Apple Watch</b><span>Bileğinden at; animasyon, ses ve titreşimle.</span></div>
+        <div class="feat"><b>Odanda at</b><span>Kamerayı bir masaya doğrult ve gerçek boyutta bir parayı fiskele.</span></div>
+        <div class="feat"><b>Bozuk Para Pong</b><span>On bardak, bir para. Hepsini olabildiğince az atışla boşalt.</span></div>
+        <div class="feat"><b>Kendi paran</b><span>Seçtiğin iki fotoğraf paranın iki yüzü olur.</span></div>
     </div>
+
     <div class="actions">
-      <a class="btn primary" href="https://apps.apple.com" target="_blank" rel="noopener">App Store'dan İndir</a>
-      <a class="btn" href="https://ifinder91.github.io/Datenschutz/" target="_blank" rel="noopener">Gizlilik Politikası</a>
+      <a class="btn primary" href="https://apps.apple.com/app/id6755661393" target="_blank" rel="noopener">App Store'dan indir</a>
+      <a class="btn" href="https://ifinder91.github.io/Datenschutz/" target="_blank" rel="noopener">Gizlilik</a>
       <a class="btn" href="mailto:evro89@hotmail.de">Destek</a>
     </div>
+
     <div class="footer">İletişim: <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a></div>
   </div>
 
-  <!-- ══ FRANÇAIS ══ -->
   <div class="page" id="p-fr">
-    <h1>Pile ou Face Gagne</h1>
-    <p class="subtitle">Prenez des décisions rapides en un seul glissement. Profitez d'un lancer de pièce fluide avec son, haptique, confettis et un mode devinette. Sur iPhone et Apple Watch.</p>
+    <div class="hero">
+      <div class="coin" aria-hidden="true">🪙</div>
+      <div>
+        <h1>Pile ou Face Gagne</h1>
+        <p class="subtitle">Décidez d'une pichenette. Une pièce qui culbute, roule et s'immobilise vraiment — avec son, haptique et une vraie physique. Désormais avec réalité augmentée et Pong de pièces. Sur iPhone et Apple Watch.</p>
+      </div>
+    </div>
+
     <div class="chips">
-      <span class="chip">Lancer de pièce</span>
-      <span class="chip">Apple Watch</span>
-      <span class="chip">Mode devinette</span>
-      <span class="chip">Son &amp; Haptique</span>
-      <span class="chip">Mode sombre &amp; clair</span>
+        <span class="chip">Pile ou face</span>
+        <span class="chip">Réalité augmentée</span>
+        <span class="chip">Pong de pièces</span>
+        <span class="chip">Votre pièce</span>
+        <span class="chip">Apple Watch</span>
+        <span class="chip">Son & haptique</span>
     </div>
+
     <div class="grid">
-      <div class="feat"><b>Rapide &amp; Équitable</b><span>Résultat aléatoire instantané — parfait pour les choix rapides.</span></div>
-      <div class="feat"><b>Devinez le prochain lancer</b><span>Choisissez pile ou face avant le lancer et suivez vos victoires.</span></div>
-      <div class="feat"><b>Apple Watch prêt</b><span>Lancez au poignet avec animation, son et haptique.</span></div>
+        <div class="feat"><b>Rapide & équitable</b><span>Un résultat aléatoire honnête en un instant — pour chaque choix rapide.</span></div>
+        <div class="feat"><b>Devinez le lancer</b><span>Annoncez pile ou face avant le lancer et suivez votre série.</span></div>
+        <div class="feat"><b>Apple Watch</b><span>Lancez au poignet, avec animation, son et haptique.</span></div>
+        <div class="feat"><b>Lancez dans votre pièce</b><span>Visez une table avec la caméra et projetez-y une pièce grandeur nature.</span></div>
+        <div class="feat"><b>Pong de pièces</b><span>Dix verres, une pièce. Videz-les tous en un minimum de lancers.</span></div>
+        <div class="feat"><b>Votre propre pièce</b><span>Deux photos de votre choix deviennent les deux faces de votre pièce.</span></div>
     </div>
+
     <div class="actions">
-      <a class="btn primary" href="https://apps.apple.com" target="_blank" rel="noopener">Télécharger sur l'App Store</a>
+      <a class="btn primary" href="https://apps.apple.com/app/id6755661393" target="_blank" rel="noopener">Télécharger sur l'App Store</a>
       <a class="btn" href="https://ifinder91.github.io/Datenschutz/" target="_blank" rel="noopener">Confidentialité</a>
       <a class="btn" href="mailto:evro89@hotmail.de">Support</a>
     </div>
-    <div class="footer">Contact : <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a></div>
+
+    <div class="footer">Contact: <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a></div>
   </div>
 
-  <!-- ══ 日本語 ══ -->
   <div class="page" id="p-ja">
-    <h1>表か裏かの勝利</h1>
-    <p class="subtitle">ひとつのスワイプで素早く決断。サウンド、触覚フィードバック、紙吹雪、予想モード付きのスムーズなコイン投げ。iPhoneとApple Watchで利用可能。</p>
+    <div class="hero">
+      <div class="coin" aria-hidden="true">🪙</div>
+      <div>
+        <h1>表か裏かの勝利</h1>
+        <p class="subtitle">ひと弾きで決める。本当に回転し、転がり、倒れるコイン — 音、触覚、そして本物の物理演算とともに。今回から拡張現実とコインポンに対応。iPhoneとApple Watchで。</p>
+      </div>
+    </div>
+
     <div class="chips">
-      <span class="chip">コイン投げ</span>
-      <span class="chip">Apple Watch</span>
-      <span class="chip">予想モード</span>
-      <span class="chip">サウンド &amp; 触覚</span>
-      <span class="chip">ダーク &amp; ライト</span>
+        <span class="chip">コイン投げ</span>
+        <span class="chip">拡張現実</span>
+        <span class="chip">コインポン</span>
+        <span class="chip">自分のコイン</span>
+        <span class="chip">Apple Watch</span>
+        <span class="chip">サウンド & 触覚</span>
     </div>
+
     <div class="grid">
-      <div class="feat"><b>速くて公平</b><span>即座にランダムな結果 — 素早い決断に最適。</span></div>
-      <div class="feat"><b>次の結果を予想</b><span>投げる前に表か裏を選んで、正解数を追跡しよう。</span></div>
-      <div class="feat"><b>Apple Watch対応</b><span>アニメーション、サウンド、触覚フィードバック付きで手首から投げる。</span></div>
+        <div class="feat"><b>速くて公平</b><span>その場で偽りのないランダムな結果 — あらゆる素早い決断に。</span></div>
+        <div class="feat"><b>結果を予想</b><span>投げる前に表か裏かを宣言し、連勝を記録しよう。</span></div>
+        <div class="feat"><b>Apple Watch</b><span>手首から投げる。アニメーション、音、触覚つき。</span></div>
+        <div class="feat"><b>部屋で投げる</b><span>カメラをテーブルに向け、実物大のコインを弾き飛ばす。</span></div>
+        <div class="feat"><b>コインポン</b><span>グラス十個にコイン一枚。できるだけ少ない投数で全部空に。</span></div>
+        <div class="feat"><b>自分のコイン</b><span>選んだ二枚の写真が、コインの表と裏になる。</span></div>
     </div>
+
     <div class="actions">
-      <a class="btn primary" href="https://apps.apple.com" target="_blank" rel="noopener">App Storeでダウンロード</a>
+      <a class="btn primary" href="https://apps.apple.com/app/id6755661393" target="_blank" rel="noopener">App Storeでダウンロード</a>
       <a class="btn" href="https://ifinder91.github.io/Datenschutz/" target="_blank" rel="noopener">プライバシー</a>
       <a class="btn" href="mailto:evro89@hotmail.de">サポート</a>
     </div>
+
     <div class="footer">連絡先: <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a></div>
   </div>
 
-  <!-- ══ 中文 ══ -->
   <div class="page" id="p-zh">
-    <h1>正面还是反面</h1>
-    <p class="subtitle">只需一次滑动即可快速做决定。享受流畅的硬币翻转体验，配有声音、触觉反馈、彩屑效果和猜测模式。支持 iPhone 和 Apple Watch。</p>
+    <div class="hero">
+      <div class="coin" aria-hidden="true">🪙</div>
+      <div>
+        <h1>正面还是反面</h1>
+        <p class="subtitle">轻轻一弹就能决定。一枚真正会翻转、滚动并停下的硬币 —— 配有声音、触觉反馈和真实的物理运算。现已支持增强现实和硬币乒乓。适用于 iPhone 和 Apple Watch。</p>
+      </div>
+    </div>
+
     <div class="chips">
-      <span class="chip">硬币翻转</span>
-      <span class="chip">Apple Watch</span>
-      <span class="chip">猜测模式</span>
-      <span class="chip">声音 &amp; 触觉</span>
-      <span class="chip">深色 &amp; 浅色模式</span>
+        <span class="chip">掷硬币</span>
+        <span class="chip">增强现实</span>
+        <span class="chip">硬币乒乓</span>
+        <span class="chip">自定义硬币</span>
+        <span class="chip">Apple Watch</span>
+        <span class="chip">声音 & 触觉</span>
     </div>
+
     <div class="grid">
-      <div class="feat"><b>快速 &amp; 公平</b><span>即时随机结果 — 非常适合快速做决定。</span></div>
-      <div class="feat"><b>猜测下一次翻转</b><span>在投掷前选择正面或反面，追踪你的胜利。</span></div>
-      <div class="feat"><b>支持 Apple Watch</b><span>在手腕上翻转硬币，带有流畅动画、声音和触觉反馈。</span></div>
+        <div class="feat"><b>快速且公平</b><span>瞬间给出诚实的随机结果 —— 适合每一个快速决定。</span></div>
+        <div class="feat"><b>猜下一次</b><span>投掷前说出正面或反面，记录你的连胜。</span></div>
+        <div class="feat"><b>Apple Watch</b><span>在手腕上投掷，带动画、声音和触觉反馈。</span></div>
+        <div class="feat"><b>在你的房间里投</b><span>把相机对准桌面，弹出一枚真实大小的硬币。</span></div>
+        <div class="feat"><b>硬币乒乓</b><span>十个杯子，一枚硬币。用尽可能少的次数全部清空。</span></div>
+        <div class="feat"><b>你自己的硬币</b><span>你选的两张照片，成为硬币的正反两面。</span></div>
     </div>
+
     <div class="actions">
-      <a class="btn primary" href="https://apps.apple.com" target="_blank" rel="noopener">在 App Store 下载</a>
+      <a class="btn primary" href="https://apps.apple.com/app/id6755661393" target="_blank" rel="noopener">在 App Store 下载</a>
       <a class="btn" href="https://ifinder91.github.io/Datenschutz/" target="_blank" rel="noopener">隐私政策</a>
       <a class="btn" href="mailto:evro89@hotmail.de">支持</a>
     </div>
+
     <div class="footer">联系方式: <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a></div>
   </div>
 
-  <!-- ══ हिन्दी ══ -->
   <div class="page" id="p-hi">
-    <h1>हेड्स या टेल्स जीतता है</h1>
-    <p class="subtitle">एक स्वाइप से त्वरित निर्णय लें। ध्वनि, हैप्टिक्स, कन्फेटी और अनुमान मोड के साथ सहज सिक्का उछालने का अनुभव। iPhone और Apple Watch पर उपलब्ध।</p>
+    <div class="hero">
+      <div class="coin" aria-hidden="true">🪙</div>
+      <div>
+        <h1>हेड्स या टेल्स जीतता है</h1>
+        <p class="subtitle">एक झटके से फैसला करें। एक सिक्का जो सचमुच पलटता, लुढ़कता और थमता है — ध्वनि, हैप्टिक्स और असली भौतिकी के साथ। अब संवर्धित वास्तविकता और सिक्का पोंग के साथ। iPhone और Apple Watch पर।</p>
+      </div>
+    </div>
+
     <div class="chips">
-      <span class="chip">सिक्का उछालना</span>
-      <span class="chip">Apple Watch</span>
-      <span class="chip">अनुमान मोड</span>
-      <span class="chip">ध्वनि &amp; हैप्टिक्स</span>
-      <span class="chip">डार्क &amp; लाइट मोड</span>
+        <span class="chip">सिक्का उछाल</span>
+        <span class="chip">संवर्धित वास्तविकता</span>
+        <span class="chip">सिक्का पोंग</span>
+        <span class="chip">अपना सिक्का</span>
+        <span class="chip">Apple Watch</span>
+        <span class="chip">ध्वनि & हैप्टिक्स</span>
     </div>
+
     <div class="grid">
-      <div class="feat"><b>तेज़ &amp; निष्पक्ष</b><span>तुरंत यादृच्छिक परिणाम — त्वरित निर्णयों के लिए बिल्कुल सही।</span></div>
-      <div class="feat"><b>अगला फ्लिप अनुमान करें</b><span>उछालने से पहले हेड या टेल चुनें और अपनी जीत ट्रैक करें।</span></div>
-      <div class="feat"><b>Apple Watch तैयार</b><span>कलाई से एनिमेशन, ध्वनि और हैप्टिक्स के साथ उछालें।</span></div>
+        <div class="feat"><b>तेज़ और निष्पक्ष</b><span>पल भर में ईमानदार यादृच्छिक परिणाम — हर त्वरित निर्णय के लिए।</span></div>
+        <div class="feat"><b>उछाल का अनुमान</b><span>उछालने से पहले हेड या टेल बताएं और अपनी लय देखें।</span></div>
+        <div class="feat"><b>Apple Watch</b><span>कलाई से उछालें — एनिमेशन, ध्वनि और हैप्टिक्स के साथ।</span></div>
+        <div class="feat"><b>अपने कमरे में उछालें</b><span>कैमरा मेज़ पर करें और असली आकार का सिक्का उस पर उड़ाएँ।</span></div>
+        <div class="feat"><b>सिक्का पोंग</b><span>दस गिलास, एक सिक्का। कम से कम थ्रो में सभी खाली करें।</span></div>
+        <div class="feat"><b>अपना सिक्का</b><span>आपकी चुनी दो तस्वीरें सिक्के के दोनों पहलू बन जाती हैं।</span></div>
     </div>
+
     <div class="actions">
-      <a class="btn primary" href="https://apps.apple.com" target="_blank" rel="noopener">App Store पर डाउनलोड करें</a>
-      <a class="btn" href="https://ifinder91.github.io/Datenschutz/" target="_blank" rel="noopener">गोपनीयता नीति</a>
+      <a class="btn primary" href="https://apps.apple.com/app/id6755661393" target="_blank" rel="noopener">App Store से डाउनलोड करें</a>
+      <a class="btn" href="https://ifinder91.github.io/Datenschutz/" target="_blank" rel="noopener">गोपनीयता</a>
       <a class="btn" href="mailto:evro89@hotmail.de">सहायता</a>
     </div>
+
     <div class="footer">संपर्क: <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a></div>
   </div>
 
-  <!-- ══ РУССКИЙ ══ -->
   <div class="page" id="p-ru">
-    <h1>Орёл или Решка</h1>
-    <p class="subtitle">Принимайте быстрые решения одним свайпом. Плавное подбрасывание монеты со звуком, вибрацией, конфетти и режимом угадывания. Для iPhone и Apple Watch.</p>
+    <div class="hero">
+      <div class="coin" aria-hidden="true">🪙</div>
+      <div>
+        <h1>Орёл или Решка</h1>
+        <p class="subtitle">Решай одним щелчком. Монета, которая по-настоящему кувыркается, катится и укладывается — со звуком, вибрацией и настоящей физикой. Теперь с дополненной реальностью и Монетным понгом. Для iPhone и Apple Watch.</p>
+      </div>
+    </div>
+
     <div class="chips">
-      <span class="chip">Подбрасывание монеты</span>
-      <span class="chip">Apple Watch</span>
-      <span class="chip">Режим угадывания</span>
-      <span class="chip">Звук &amp; Вибрация</span>
-      <span class="chip">Тёмный &amp; Светлый режим</span>
+        <span class="chip">Бросок монеты</span>
+        <span class="chip">Дополненная реальность</span>
+        <span class="chip">Монетный понг</span>
+        <span class="chip">Своя монета</span>
+        <span class="chip">Apple Watch</span>
+        <span class="chip">Звук и вибрация</span>
     </div>
+
     <div class="grid">
-      <div class="feat"><b>Быстро &amp; Честно</b><span>Мгновенный случайный результат — идеально для быстрых решений.</span></div>
-      <div class="feat"><b>Угадай следующий бросок</b><span>Выбери орёл или решку до броска и отслеживай победы.</span></div>
-      <div class="feat"><b>Apple Watch готов</b><span>Бросай монету с запястья с анимацией, звуком и вибрацией.</span></div>
+        <div class="feat"><b>Быстро и честно</b><span>Честный случайный результат за мгновение — для любого быстрого выбора.</span></div>
+        <div class="feat"><b>Угадай бросок</b><span>Назови орла или решку до броска и следи за серией.</span></div>
+        <div class="feat"><b>Apple Watch</b><span>Бросай с запястья — с анимацией, звуком и вибрацией.</span></div>
+        <div class="feat"><b>Брось в своей комнате</b><span>Наведи камеру на стол и щёлкни по монете в натуральную величину.</span></div>
+        <div class="feat"><b>Монетный понг</b><span>Десять стаканов, одна монета. Опустоши все за минимум бросков.</span></div>
+        <div class="feat"><b>Своя монета</b><span>Две выбранные фотографии становятся сторонами твоей монеты.</span></div>
     </div>
+
     <div class="actions">
-      <a class="btn primary" href="https://apps.apple.com" target="_blank" rel="noopener">Скачать в App Store</a>
+      <a class="btn primary" href="https://apps.apple.com/app/id6755661393" target="_blank" rel="noopener">Скачать в App Store</a>
       <a class="btn" href="https://ifinder91.github.io/Datenschutz/" target="_blank" rel="noopener">Конфиденциальность</a>
       <a class="btn" href="mailto:evro89@hotmail.de">Поддержка</a>
     </div>
+
     <div class="footer">Контакт: <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a></div>
   </div>
 
-  <!-- ══ ESPAÑOL ══ -->
   <div class="page" id="p-es">
-    <h1>Cara o Cruz Gana</h1>
-    <p class="subtitle">Toma decisiones rápidas con un solo deslizamiento. Disfruta de un lanzamiento de moneda fluido con sonido, háptica, confeti y modo de adivinanza. En iPhone y Apple Watch.</p>
+    <div class="hero">
+      <div class="coin" aria-hidden="true">🪙</div>
+      <div>
+        <h1>Cara o Cruz Gana</h1>
+        <p class="subtitle">Decide con un toque. Una moneda que de verdad da vueltas, rueda y se posa — con sonido, háptica y física real. Ahora con realidad aumentada y Pong de monedas. En iPhone y Apple Watch.</p>
+      </div>
+    </div>
+
     <div class="chips">
-      <span class="chip">Lanzamiento de moneda</span>
-      <span class="chip">Apple Watch</span>
-      <span class="chip">Modo adivinanza</span>
-      <span class="chip">Sonido &amp; Háptica</span>
-      <span class="chip">Modo oscuro &amp; claro</span>
+        <span class="chip">Cara o cruz</span>
+        <span class="chip">Realidad aumentada</span>
+        <span class="chip">Pong de monedas</span>
+        <span class="chip">Tu moneda</span>
+        <span class="chip">Apple Watch</span>
+        <span class="chip">Sonido y háptica</span>
     </div>
+
     <div class="grid">
-      <div class="feat"><b>Rápido &amp; Justo</b><span>Resultado aleatorio instantáneo — perfecto para decisiones rápidas.</span></div>
-      <div class="feat"><b>Adivina el siguiente lanzamiento</b><span>Elige cara o cruz antes de lanzar y sigue tus victorias.</span></div>
-      <div class="feat"><b>Apple Watch listo</b><span>Lanza desde tu muñeca con animación, sonido y háptica.</span></div>
+        <div class="feat"><b>Rápido y justo</b><span>Un resultado aleatorio honesto al instante — para cada decisión rápida.</span></div>
+        <div class="feat"><b>Adivina el lanzamiento</b><span>Di cara o cruz antes de lanzar y sigue tu racha.</span></div>
+        <div class="feat"><b>Apple Watch</b><span>Lanza desde la muñeca, con animación, sonido y háptica.</span></div>
+        <div class="feat"><b>Lanza en tu habitación</b><span>Apunta la cámara a una mesa y lanza sobre ella una moneda a tamaño real.</span></div>
+        <div class="feat"><b>Pong de monedas</b><span>Diez vasos, una moneda. Vacíalos todos con los menos tiros posibles.</span></div>
+        <div class="feat"><b>Tu propia moneda</b><span>Dos fotos que elijas se convierten en las dos caras de tu moneda.</span></div>
     </div>
+
     <div class="actions">
-      <a class="btn primary" href="https://apps.apple.com" target="_blank" rel="noopener">Descargar en el App Store</a>
+      <a class="btn primary" href="https://apps.apple.com/app/id6755661393" target="_blank" rel="noopener">Descargar en el App Store</a>
       <a class="btn" href="https://ifinder91.github.io/Datenschutz/" target="_blank" rel="noopener">Privacidad</a>
       <a class="btn" href="mailto:evro89@hotmail.de">Soporte</a>
     </div>
+
     <div class="footer">Contacto: <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a></div>
   </div>
 
-  <!-- ══ PORTUGUÊS ══ -->
   <div class="page" id="p-pt">
-    <h1>Cara ou Coroa Vence</h1>
-    <p class="subtitle">Tome decisões rápidas com um único deslize. Aproveite um lançamento de moeda suave com som, vibração, confete e modo de adivinhação. No iPhone e Apple Watch.</p>
+    <div class="hero">
+      <div class="coin" aria-hidden="true">🪙</div>
+      <div>
+        <h1>Cara ou Coroa Vence</h1>
+        <p class="subtitle">Decida com um toque. Uma moeda que de fato gira, rola e assenta — com som, vibração e física de verdade. Agora com realidade aumentada e Pong de moedas. No iPhone e no Apple Watch.</p>
+      </div>
+    </div>
+
     <div class="chips">
-      <span class="chip">Lançamento de moeda</span>
-      <span class="chip">Apple Watch</span>
-      <span class="chip">Modo adivinhação</span>
-      <span class="chip">Som &amp; Vibração</span>
-      <span class="chip">Modo escuro &amp; claro</span>
+        <span class="chip">Cara ou coroa</span>
+        <span class="chip">Realidade aumentada</span>
+        <span class="chip">Pong de moedas</span>
+        <span class="chip">Sua moeda</span>
+        <span class="chip">Apple Watch</span>
+        <span class="chip">Som e vibração</span>
     </div>
+
     <div class="grid">
-      <div class="feat"><b>Rápido &amp; Justo</b><span>Resultado aleatório instantâneo — perfeito para decisões rápidas.</span></div>
-      <div class="feat"><b>Adivinhe o próximo lançamento</b><span>Escolha cara ou coroa antes de lançar e acompanhe suas vitórias.</span></div>
-      <div class="feat"><b>Apple Watch pronto</b><span>Lance do pulso com animação, som e vibração.</span></div>
+        <div class="feat"><b>Rápido e justo</b><span>Um resultado aleatório honesto num instante — para cada decisão rápida.</span></div>
+        <div class="feat"><b>Adivinhe o lançamento</b><span>Diga cara ou coroa antes de lançar e acompanhe sua sequência.</span></div>
+        <div class="feat"><b>Apple Watch</b><span>Lance do pulso, com animação, som e vibração.</span></div>
+        <div class="feat"><b>Lance no seu quarto</b><span>Aponte a câmera para uma mesa e lance nela uma moeda em tamanho real.</span></div>
+        <div class="feat"><b>Pong de moedas</b><span>Dez copos, uma moeda. Esvazie todos com o menor número de lançamentos.</span></div>
+        <div class="feat"><b>Sua própria moeda</b><span>Duas fotos à sua escolha viram os dois lados da sua moeda.</span></div>
     </div>
+
     <div class="actions">
-      <a class="btn primary" href="https://apps.apple.com" target="_blank" rel="noopener">Baixar na App Store</a>
+      <a class="btn primary" href="https://apps.apple.com/app/id6755661393" target="_blank" rel="noopener">Baixar na App Store</a>
       <a class="btn" href="https://ifinder91.github.io/Datenschutz/" target="_blank" rel="noopener">Privacidade</a>
       <a class="btn" href="mailto:evro89@hotmail.de">Suporte</a>
     </div>
+
     <div class="footer">Contato: <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a></div>
   </div>
 
-  <!-- ══ العربية ══ -->
   <div class="page" id="p-ar" dir="rtl" style="text-align:right">
-    <h1>وجه أم ذيل يفوز</h1>
-    <p class="subtitle">اتخذ قرارات سريعة بسحبة واحدة. استمتع بتجربة قلب عملة سلسة مع الصوت والاهتزاز والقصاصات ووضع التخمين. متاح على iPhone وApple Watch.</p>
+    <div class="hero">
+      <div class="coin" aria-hidden="true">🪙</div>
+      <div>
+        <h1>وجه أم ذيل يفوز</h1>
+        <p class="subtitle">احسم الأمر بنقرة واحدة. عملة تتقلب وتتدحرج وتستقر فعلًا — مع الصوت والاهتزاز وفيزياء حقيقية. والآن مع الواقع المعزز وبونغ العملة. على iPhone وApple Watch.</p>
+      </div>
+    </div>
+
     <div class="chips">
-      <span class="chip">قلب العملة</span>
-      <span class="chip">Apple Watch</span>
-      <span class="chip">وضع التخمين</span>
-      <span class="chip">صوت &amp; اهتزاز</span>
-      <span class="chip">وضع داكن &amp; فاتح</span>
+        <span class="chip">قلب العملة</span>
+        <span class="chip">الواقع المعزز</span>
+        <span class="chip">بونغ العملة</span>
+        <span class="chip">عملتك الخاصة</span>
+        <span class="chip">Apple Watch</span>
+        <span class="chip">صوت واهتزاز</span>
     </div>
+
     <div class="grid">
-      <div class="feat"><b>سريع &amp; عادل</b><span>نتيجة عشوائية فورية — مثالية للقرارات السريعة.</span></div>
-      <div class="feat"><b>خمّن القلبة التالية</b><span>اختر وجهًا أو ذيلًا قبل الرمي وتتبع انتصاراتك.</span></div>
-      <div class="feat"><b>جاهز لـ Apple Watch</b><span>ارمِ من معصمك مع رسوم متحركة وصوت واهتزاز.</span></div>
+        <div class="feat"><b>سريع وعادل</b><span>نتيجة عشوائية نزيهة في لحظة — لكل قرار سريع.</span></div>
+        <div class="feat"><b>خمّن الرمية</b><span>قل وجه أم ذيل قبل الرمي وتابع سلسلتك.</span></div>
+        <div class="feat"><b>Apple Watch</b><span>ارمِ من معصمك، مع الحركة والصوت والاهتزاز.</span></div>
+        <div class="feat"><b>ارمِ في غرفتك</b><span>وجّه الكاميرا نحو طاولة واقذف عليها عملة بحجمها الحقيقي.</span></div>
+        <div class="feat"><b>بونغ العملة</b><span>عشرة أكواب وعملة واحدة. أفرغها كلها بأقل عدد من الرميات.</span></div>
+        <div class="feat"><b>عملتك الخاصة</b><span>صورتان من اختيارك تصبحان وجهَي عملتك.</span></div>
     </div>
+
     <div class="actions" style="justify-content:flex-end">
-      <a class="btn primary" href="https://apps.apple.com" target="_blank" rel="noopener">تحميل من App Store</a>
+      <a class="btn primary" href="https://apps.apple.com/app/id6755661393" target="_blank" rel="noopener">التحميل من App Store</a>
       <a class="btn" href="https://ifinder91.github.io/Datenschutz/" target="_blank" rel="noopener">الخصوصية</a>
       <a class="btn" href="mailto:evro89@hotmail.de">الدعم</a>
     </div>
+
     <div class="footer">التواصل: <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a></div>
   </div>
 
-  <!-- ══ 한국어 ══ -->
   <div class="page" id="p-ko">
-    <h1>앞면 또는 뒷면 승리</h1>
-    <p class="subtitle">한 번의 스와이프로 빠른 결정을 내리세요. 사운드, 햅틱, 색종이, 추측 모드가 있는 부드러운 동전 던지기. iPhone과 Apple Watch에서 이용 가능.</p>
+    <div class="hero">
+      <div class="coin" aria-hidden="true">🪙</div>
+      <div>
+        <h1>앞면 또는 뒷면 승리</h1>
+        <p class="subtitle">한 번 튕겨 결정하세요. 실제로 구르고 회전하다 멈추는 동전 — 소리와 햅틱, 진짜 물리 연산과 함께. 이제 증강현실과 코인 퐁까지. iPhone과 Apple Watch에서.</p>
+      </div>
+    </div>
+
     <div class="chips">
-      <span class="chip">동전 던지기</span>
-      <span class="chip">Apple Watch</span>
-      <span class="chip">추측 모드</span>
-      <span class="chip">사운드 &amp; 햅틱</span>
-      <span class="chip">다크 &amp; 라이트 모드</span>
+        <span class="chip">동전 던지기</span>
+        <span class="chip">증강현실</span>
+        <span class="chip">코인 퐁</span>
+        <span class="chip">나만의 동전</span>
+        <span class="chip">Apple Watch</span>
+        <span class="chip">사운드 & 햅틱</span>
     </div>
+
     <div class="grid">
-      <div class="feat"><b>빠르고 공정함</b><span>즉각적인 무작위 결과 — 빠른 선택에 완벽합니다.</span></div>
-      <div class="feat"><b>다음 결과 추측</b><span>던지기 전에 앞면이나 뒷면을 선택하고 승리를 추적하세요.</span></div>
-      <div class="feat"><b>Apple Watch 지원</b><span>애니메이션, 사운드, 햅틱으로 손목에서 던지세요.</span></div>
+        <div class="feat"><b>빠르고 공정하게</b><span>순식간에 정직한 무작위 결과 — 모든 빠른 결정에.</span></div>
+        <div class="feat"><b>결과 맞히기</b><span>던지기 전에 앞면인지 뒷면인지 말하고 연승을 기록하세요.</span></div>
+        <div class="feat"><b>Apple Watch</b><span>손목에서 던지세요. 애니메이션, 소리, 햅틱과 함께.</span></div>
+        <div class="feat"><b>당신의 방에서 던지기</b><span>카메라를 탁자에 향하고 실제 크기의 동전을 튕겨 보내세요.</span></div>
+        <div class="feat"><b>코인 퐁</b><span>유리컵 열 개, 동전 하나. 최소한의 던지기로 모두 비우세요.</span></div>
+        <div class="feat"><b>나만의 동전</b><span>고른 사진 두 장이 동전의 양면이 됩니다.</span></div>
     </div>
+
     <div class="actions">
-      <a class="btn primary" href="https://apps.apple.com" target="_blank" rel="noopener">App Store에서 다운로드</a>
-      <a class="btn" href="https://ifinder91.github.io/Datenschutz/" target="_blank" rel="noopener">개인정보처리방침</a>
+      <a class="btn primary" href="https://apps.apple.com/app/id6755661393" target="_blank" rel="noopener">App Store에서 다운로드</a>
+      <a class="btn" href="https://ifinder91.github.io/Datenschutz/" target="_blank" rel="noopener">개인정보</a>
       <a class="btn" href="mailto:evro89@hotmail.de">지원</a>
     </div>
+
     <div class="footer">연락처: <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a></div>
   </div>
 
-  <!-- ══ ITALIANO ══ -->
   <div class="page" id="p-it">
-    <h1>Testa o Croce Vince</h1>
-    <p class="subtitle">Prendi decisioni rapide con un solo gesto. Goditi un lancio della moneta fluido con suono, feedback aptico, coriandoli e modalità indovina. Su iPhone e Apple Watch.</p>
+    <div class="hero">
+      <div class="coin" aria-hidden="true">🪙</div>
+      <div>
+        <h1>Testa o Croce Vince</h1>
+        <p class="subtitle">Decidi con un colpetto. Una moneta che davvero ruota, rotola e si posa — con suono, feedback aptico e fisica reale. Ora con realtà aumentata e Pong con le monete. Su iPhone e Apple Watch.</p>
+      </div>
+    </div>
+
     <div class="chips">
-      <span class="chip">Lancio della moneta</span>
-      <span class="chip">Apple Watch</span>
-      <span class="chip">Modalità indovina</span>
-      <span class="chip">Suono &amp; Aptico</span>
-      <span class="chip">Modalità scura &amp; chiara</span>
+        <span class="chip">Testa o croce</span>
+        <span class="chip">Realtà aumentata</span>
+        <span class="chip">Pong con le monete</span>
+        <span class="chip">La tua moneta</span>
+        <span class="chip">Apple Watch</span>
+        <span class="chip">Suono e aptico</span>
     </div>
+
     <div class="grid">
-      <div class="feat"><b>Veloce &amp; Equo</b><span>Risultato casuale istantaneo — perfetto per scelte rapide.</span></div>
-      <div class="feat"><b>Indovina il prossimo lancio</b><span>Scegli testa o croce prima del lancio e tieni traccia delle vittorie.</span></div>
-      <div class="feat"><b>Apple Watch pronto</b><span>Lancia dal polso con animazione, suono e feedback aptico.</span></div>
+        <div class="feat"><b>Veloce ed equo</b><span>Un risultato casuale onesto in un attimo — per ogni scelta rapida.</span></div>
+        <div class="feat"><b>Indovina il lancio</b><span>Di' testa o croce prima del lancio e segui la tua serie.</span></div>
+        <div class="feat"><b>Apple Watch</b><span>Lancia dal polso, con animazione, suono e feedback aptico.</span></div>
+        <div class="feat"><b>Lancia nella tua stanza</b><span>Punta la fotocamera su un tavolo e lanciaci una moneta a grandezza reale.</span></div>
+        <div class="feat"><b>Pong con le monete</b><span>Dieci bicchieri, una moneta. Svuotali tutti con meno lanci possibile.</span></div>
+        <div class="feat"><b>La tua moneta</b><span>Due foto a tua scelta diventano le due facce della tua moneta.</span></div>
     </div>
+
     <div class="actions">
-      <a class="btn primary" href="https://apps.apple.com" target="_blank" rel="noopener">Scarica sull'App Store</a>
+      <a class="btn primary" href="https://apps.apple.com/app/id6755661393" target="_blank" rel="noopener">Scarica sull'App Store</a>
       <a class="btn" href="https://ifinder91.github.io/Datenschutz/" target="_blank" rel="noopener">Privacy</a>
       <a class="btn" href="mailto:evro89@hotmail.de">Supporto</a>
     </div>
+
     <div class="footer">Contatto: <a href="mailto:evro89@hotmail.de">evro89@hotmail.de</a></div>
   </div>
 
@@ -503,10 +654,9 @@
 
   const map = { 'zh-TW':'zh','zh-CN':'zh','pt-BR':'pt','pt-PT':'pt','fr-CA':'fr','fr-FR':'fr' };
   const raw = navigator.language || 'en';
-  const full = raw.replace('-','_');
   const short = raw.slice(0,2);
-  const supported = ['en','de','tr','fr','ja','zh','hi','ru','es','pt','ar','ko','it'];
-  const detected = map[full] || map[raw] || (supported.includes(short) ? short : 'en');
+  const supported = ['en', 'de', 'tr', 'fr', 'ja', 'zh', 'hi', 'ru', 'es', 'pt', 'ar', 'ko', 'it'];
+  const detected = map[raw] || (supported.includes(short) ? short : 'en');
   document.getElementById('langSelect').value = detected;
   switchLang(detected);
 </script>
